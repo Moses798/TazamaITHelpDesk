@@ -142,4 +142,4 @@ echo "\n=== Summary ===\n";
 echo "  Total matrix cells : $total (expect 63)\n";
 echo "  Combination PASS   : $pass\n";
 echo "  FAIL / MISSING     : $fail\n";
-echo "\n" . ($fail === 0 ? "✅  ALL TESTS PASSED" : "❌  SOME TESTS FAILED") . "\n";
+echo "\n" . ($fail === 0 ? "ALL TESTS PASSED" : " SOME TESTS FAILED") . "\n";
