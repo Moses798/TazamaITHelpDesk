@@ -2,8 +2,11 @@
 /**
  * Tazai API — Chat endpoint
  * Receives a message from the website widget and returns Tazai's response.
- * Uses the Hermes Tazai gateway's Telegram bot as the AI backend via direct API call,
- * or falls back to a simple rule-based response for V1.
+ *
+ * Enforcement order (all must pass before AI is invoked):
+ *   1. TAZAI_AI_ENABLED flag (config.php) — global kill switch
+ *   2. PHP session — authenticated website user required
+ *   3. Employee registry (SQLite) — user must be an authorized Tazama employee
  */
 
 function handle_chat($method) {
@@ -13,7 +16,52 @@ function handle_chat($method) {
         return;
     }
 
-    $body = json_decode(file_get_contents('php://input'), true);
+    // ── 1. Global enable/disable switch ──────────────────────────────────────
+    // Require config.php so TAZAI_AI_ENABLED and TAZAI_DB_PATH are available.
+    // config.php also calls session_start() — guard against double-start.
+    if (!defined('TAZAI_AI_ENABLED')) {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        require_once __DIR__ . '/../includes/config.php';
+    }
+
+    if (!TAZAI_AI_ENABLED) {
+        http_response_code(503);
+        echo json_encode([
+            'error'   => 'unavailable',
+            'message' => 'Tazai is currently unavailable while the system is being developed.',
+        ]);
+        return;
+    }
+
+    // ── 2. Session authentication ─────────────────────────────────────────────
+    // $_SESSION['user'] is set by index.php login and contains the account object.
+    $sessionUser = $_SESSION['user'] ?? null;
+    if (!$sessionUser || empty($sessionUser['email'])) {
+        http_response_code(401);
+        echo json_encode([
+            'error'   => 'unauthorized',
+            'message' => 'Tazai is available only to authorized Tazama employees.',
+        ]);
+        return;
+    }
+
+    // ── 3. Employee registry check (server-side, SQLite) ─────────────────────
+    // Never trust a client-supplied flag. Look up the session email in the DB.
+    $userEmail = strtolower(trim($sessionUser['email']));
+
+    if (!tazai_is_authorized_employee($userEmail)) {
+        http_response_code(403);
+        echo json_encode([
+            'error'   => 'unauthorized',
+            'message' => 'Tazai is available only to authorized Tazama employees.',
+        ]);
+        return;
+    }
+
+    // ── 4. All checks passed — handle the request ─────────────────────────────
+    $body    = json_decode(file_get_contents('php://input'), true);
     $message = trim($body['message'] ?? '');
     $history = $body['history'] ?? [];
 
@@ -23,11 +71,40 @@ function handle_chat($method) {
         return;
     }
 
-    // V1: Rule-based responses covering common IT support scenarios
-    // When Tazai WhatsApp/Hermes AI is fully connected, swap this for an API call
+    // V1: Rule-based responses covering common IT support scenarios.
+    // When Tazai WhatsApp/Hermes AI is fully connected, swap this for an API call.
     $reply = tazai_respond($message, $history);
 
     echo json_encode(['reply' => $reply, 'source' => 'tazai-v1']);
+}
+
+/**
+ * Look up an email address in the Tazai employee registry.
+ * Returns true only if the employee exists AND authorized = 1.
+ * No employee data is ever returned to the caller.
+ */
+function tazai_is_authorized_employee($email) {
+    if (!defined('TAZAI_DB_PATH') || !file_exists(TAZAI_DB_PATH)) {
+        // If we can't reach the DB, fail closed (deny by default).
+        return false;
+    }
+
+    try {
+        $pdo = new PDO('sqlite:' . TAZAI_DB_PATH, null, null, [
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        ]);
+        $stmt = $pdo->prepare(
+            'SELECT authorized FROM employees WHERE LOWER(email) = ? LIMIT 1'
+        );
+        $stmt->execute([$email]);
+        $row = $stmt->fetch();
+
+        return $row && (int) $row['authorized'] === 1;
+    } catch (Exception $e) {
+        // Fail closed — DB errors deny access, never expose exception detail.
+        return false;
+    }
 }
 
 function tazai_respond($msg, $history) {
