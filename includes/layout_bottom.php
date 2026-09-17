@@ -148,11 +148,22 @@ function tazaiSend() {
   .then(function(r){ return r.json(); })
   .then(function(d) {
     thinking.remove();
-    var reply = d.reply || d.error || 'Sorry, I had trouble responding. Please try again.';
+
+    // Handle known error states — show specific message, no spinner implied
+    if (d.error === 'unavailable') {
+      tazaiAddMsg('Tazai is currently unavailable while the system is being developed.', 'agent');
+      return;
+    }
+    if (d.error === 'unauthorized') {
+      tazaiAddMsg('Tazai is available only to authorized Tazama employees.', 'agent');
+      return;
+    }
+
+    var reply = d.reply || 'Sorry, I had trouble responding. Please try again.';
     tazaiAddMsg(reply, 'agent');
     tazaiHistory.push({role:'assistant', content:reply});
 
-    // Show channel choice after first exchange
+    // Show channel choice after first successful exchange
     if (tazaiFirstMsg) {
       tazaiFirstMsg = false;
       var waLink = 'https://wa.me/260963796239?text=' + encodeURIComponent('Hi Tazai, I need IT support. ' + text);

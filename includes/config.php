@@ -12,6 +12,14 @@ define('BASE_PATH', dirname(__DIR__));
 define('DATA_FILE', BASE_PATH . '/data/store.json');
 define('SEED_FILE', BASE_PATH . '/data/seed.json');
 
+// ── Tazai AI Enable Switch ────────────────────────────────────────────────────
+// Set to true ONLY when development is complete and Tazai is ready for employees.
+// This is the ONE authoritative switch — no other file should hardcode the enabled state.
+define('TAZAI_AI_ENABLED', false);
+
+// Path to the Tazai employee registry (SQLite)
+define('TAZAI_DB_PATH', '/home/shadrickvidmar/Projects/vidmarholdings/Businesses/vidmar.ai/assets/clients/Tazama Pipelines LTD/Tazai/database/tazai.db');
+
 /* ------------------------------------------------------------------ */
 /* Data store                                                          */
 /* ------------------------------------------------------------------ */
