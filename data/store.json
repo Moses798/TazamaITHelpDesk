@@ -41,7 +41,6 @@
         "Email",
         "Printer",
         "Security"
-
     ],
     "priorities": {
         "Critical": {
@@ -104,9 +103,9 @@
             "dept": "Finance",
             "cat": "Email",
             "priority": "High",
-            "status": "In Progress",
+            "status": "New",
             "requester": "Angela Cruz",
-            "assignee": "Marcus Webb",
+            "assignee": "Chileshe Chileshe",
             "desc": "Emails sent after 8am are not appearing in Sent folder. Rebooted twice, still failing to sync across devices.",
             "history": [
                 {
@@ -126,9 +125,52 @@
                     "role": "employee",
                     "action": "sent a message",
                     "is_message": true,
-                    "seen_by_admin": false,
+                    "seen_by_admin": true,
                     "text": "Hi, still not syncing — could someone take another look today? It's affecting a few people on my team too.",
                     "at": 1789558576
+                },
+                {
+                    "who": "Moses Chola",
+                    "role": "admin",
+                    "at": 1789646621,
+                    "action": "changed status to On Hold"
+                },
+                {
+                    "who": "Moses Chola",
+                    "role": "admin",
+                    "at": 1789646626,
+                    "action": "changed status to Resolved"
+                },
+                {
+                    "who": "Moses Chola",
+                    "role": "admin",
+                    "at": 1789646631,
+                    "action": "changed status to New"
+                },
+                {
+                    "who": "Moses Chola",
+                    "role": "admin",
+                    "at": 1789646654,
+                    "action": "assigned this ticket to Chileshe Chileshe"
+                },
+                {
+                    "who": "Moses Chola",
+                    "role": "admin",
+                    "action": "sent a message",
+                    "text": "What happened?",
+                    "is_message": true,
+                    "seen_by_admin": true,
+                    "at": 1789648363
+                },
+                {
+                    "who": "Moses Chola",
+                    "role": "admin",
+                    "action": "sent a message",
+                    "text": "hello madam",
+                    "is_message": true,
+                    "seen_by_admin": true,
+                    "seen_by_requester": false,
+                    "at": 1789649558
                 }
             ],
             "created": 1789547416,
