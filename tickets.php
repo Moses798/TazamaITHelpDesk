@@ -10,13 +10,21 @@ $statuses = $store['statuses'];
 
 $statusFilter = $_GET['status'] ?? 'all';
 $priorityFilter = $_GET['priority'] ?? 'all';
+$categoryFilter = $_GET['category'] ?? 'all';
 $view = $_GET['view'] ?? 'list';
 
-$tickets = array_values(array_filter($store['tickets'], function ($t) use ($statusFilter, $priorityFilter) {
+$tickets = array_values(array_filter($store['tickets'], function ($t) use ($statusFilter, $priorityFilter, $categoryFilter) {
     if ($statusFilter !== 'all' && $t['status'] !== $statusFilter) return false;
     if ($priorityFilter !== 'all' && $t['priority'] !== $priorityFilter) return false;
+    if ($categoryFilter !== 'all' && ($t['cat'] ?? '') !== $categoryFilter) return false;
     return true;
 }));
+
+if ($role === 'employee') {
+    $tickets = array_values(array_filter($tickets, function ($t) use ($user) {
+        return ($t['requester'] ?? '') === ($user['name'] ?? '');
+    }));
+}
 
 $page_title = $role === 'admin' ? ($view === 'board' ? 'Board View' : 'All Tickets') : 'My Tickets';
 $active_nav = $role === 'admin' ? ($view === 'board' ? 'kanban' : 'tickets') : 'my-tickets';
@@ -38,11 +46,17 @@ require __DIR__ . '/includes/layout_top.php';
       <option value="<?= h($p) ?>" <?= $priorityFilter === $p ? 'selected' : '' ?>><?= h($p) ?></option>
     <?php endforeach; ?>
   </select>
+  <select name="category" onchange="this.form.submit()" style="width:150px;">
+    <option value="all" <?= $categoryFilter === 'all' ? 'selected' : '' ?>>All categories</option>
+    <?php foreach ($store['categories'] as $c): ?>
+      <option value="<?= h($c) ?>" <?= $categoryFilter === $c ? 'selected' : '' ?>><?= h($c) ?></option>
+    <?php endforeach; ?>
+  </select>
   <?php if ($role === 'admin'): ?>
     <div style="margin-left:auto;display:flex;background:var(--bg-app);border-radius:10px;padding:3px;gap:2px;border:1px solid var(--border);">
-      <a href="?status=<?= h($statusFilter) ?>&priority=<?= h($priorityFilter) ?>&view=list"
+      <a href="?status=<?= h($statusFilter) ?>&priority=<?= h($priorityFilter) ?>&category=<?= h($categoryFilter) ?>&view=list"
          class="btn <?= $view === 'list' ? 'btn-secondary' : 'btn-ghost' ?>" style="padding:6px 10px;">List</a>
-      <a href="?status=<?= h($statusFilter) ?>&priority=<?= h($priorityFilter) ?>&view=board"
+      <a href="?status=<?= h($statusFilter) ?>&priority=<?= h($priorityFilter) ?>&category=<?= h($categoryFilter) ?>&view=board"
          class="btn <?= $view === 'board' ? 'btn-secondary' : 'btn-ghost' ?>" style="padding:6px 10px;">Board</a>
     </div>
   <?php endif; ?>

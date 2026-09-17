@@ -12,7 +12,7 @@ $statuses = $store['statuses'];
 $agents = $store['agents'];
 
 $idx = td_find_ticket_index($store, $id);
-if ($idx === null) {
+if ($idx === null || ($role === 'employee' && ($store['tickets'][$idx]['requester'] ?? '') !== ($user['name'] ?? ''))) {
     header('Location: tickets.php');
     exit;
 }
@@ -27,7 +27,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($text !== '') {
             $store['tickets'][$idx]['history'][] = [
                 'who' => $user['name'], 'role' => $role, 'action' => 'sent a message',
-                'text' => $text, 'is_message' => true, 'seen_by_admin' => $role !== 'employee', 'at' => time(),
+                'text' => $text, 'is_message' => true,
+                'seen_by_admin' => $role !== 'employee',
+                'seen_by_requester' => $role === 'employee',
+                'at' => time(),
             ];
             td_save_store($store);
         }
@@ -98,6 +101,16 @@ if ($role === 'admin') {
     foreach ($store['tickets'][$idx]['history'] as &$hh) {
         if (!empty($hh['is_message']) && ($hh['role'] ?? '') === 'employee' && empty($hh['seen_by_admin'])) {
             $hh['seen_by_admin'] = true;
+            $changed = true;
+        }
+    }
+    unset($hh);
+    if ($changed) td_save_store($store);
+} else {
+    $changed = false;
+    foreach ($store['tickets'][$idx]['history'] as &$hh) {
+        if (!empty($hh['is_message']) && ($hh['role'] ?? '') === 'admin' && empty($hh['seen_by_requester'])) {
+            $hh['seen_by_requester'] = true;
             $changed = true;
         }
     }
@@ -304,13 +317,11 @@ require __DIR__ . '/includes/layout_top.php';
         <?php endforeach; ?>
       </div>
 
-      <?php if (!$isClosed): ?>
-        <form method="post" action="ticket.php?id=<?= (int) $ticket['id'] ?>" style="display:flex;gap:8px;margin-top:16px;">
+      <form method="post" action="ticket.php?id=<?= (int) $ticket['id'] ?>" style="display:flex;gap:8px;margin-top:16px;">
           <input type="hidden" name="action" value="message">
-          <input type="text" name="text" placeholder="<?= $role === 'employee' ? 'Message IT about this issue...' : 'Reply to the employee or add a note...' ?>" required>
+          <input type="text" name="text" placeholder="<?= $role === 'employee' ? 'Message IT about this issue...' : 'Message the requester...' ?>" required>
           <button type="submit" class="btn btn-primary" style="padding:9px 12px;">&#9658;</button>
-        </form>
-      <?php endif; ?>
+      </form>
     </div>
   </div>
 </div>

@@ -78,7 +78,10 @@ function td_render_ticket_rows($rows, $priorities, $show_assignee = true) {
 require __DIR__ . '/includes/layout_top.php';
 
 if ($role === 'employee'):
-    $mine = array_slice($tickets, 0, 6);
+    $mine = array_values(array_filter($tickets, function ($t) use ($user) {
+        return ($t['requester'] ?? '') === ($user['name'] ?? '');
+    }));
+    $mine = array_slice($mine, 0, 6);
     $open = count(array_filter($mine, fn($t) => !in_array($t['status'], ['Resolved', 'Closed'], true)));
     $resolved = count(array_filter($mine, fn($t) => $t['status'] === 'Resolved'));
     $closed = count(array_filter($mine, fn($t) => $t['status'] === 'Closed'));

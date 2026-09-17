@@ -23,12 +23,24 @@ if ($role === 'admin') {
             $unseen_bubbles[] = ['ticket' => $t, 'count' => count($unseen), 'last_from' => $last['who'], 'last_text' => $last['text']];
         }
     }
+} else {
+    foreach ($store['tickets'] as $t) {
+        if (($t['requester'] ?? null) !== ($user['name'] ?? null)) continue;
+        $unseen = array_values(array_filter($t['history'], function ($hh) {
+            return !empty($hh['is_message'])
+                && ($hh['role'] ?? '') === 'admin'
+                && empty($hh['seen_by_requester']);
+        }));
+        if (count($unseen) > 0) {
+            $last = end($unseen);
+            $unseen_bubbles[] = ['ticket' => $t, 'count' => count($unseen), 'last_from' => $last['who'], 'last_text' => $last['text']];
+        }
+    }
 }
 
 $employee_nav = [
     ['key' => 'dashboard', 'label' => 'Dashboard', 'href' => 'dashboard.php'],
     ['key' => 'my-tickets', 'label' => 'My Tickets', 'href' => 'tickets.php'],
-    ['key' => 'new-ticket', 'label' => 'Report an Issue', 'href' => $is_dashboard ? '#report-issue' : 'new_ticket.php'],
 ];
 $admin_nav = [
     ['key' => 'dashboard', 'label' => 'Dashboard', 'href' => 'dashboard.php'],
@@ -85,13 +97,8 @@ $nav = $role === 'admin' ? $admin_nav : $employee_nav;
       </form>
 
       <div class="right">
-        <span class="badge <?= $role === 'admin' ? 'role-badge-admin' : 'role-badge-employee' ?>">
-          <?= $role === 'admin' ? 'IT Administrator' : 'Employee' ?>
-        </span>
-        <?php if ($role === 'employee' && $is_dashboard): ?>
-          <a href="#report-issue" class="btn btn-primary hide-mobile" onclick="openReportIssue(event)">+ New ticket</a>
-        <?php else: ?>
-          <a href="new_ticket.php" class="btn btn-primary hide-mobile">+ New ticket</a>
+        <?php if ($role === 'admin'): ?>
+          <span class="badge role-badge-admin">IT Administrator</span>
         <?php endif; ?>
         <div style="width:1px;height:26px;background:var(--border)" class="hide-mobile"></div>
         <div class="hide-mobile" style="display:flex;align-items:center;gap:9px;">
