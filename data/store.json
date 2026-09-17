@@ -125,7 +125,7 @@
                     "role": "employee",
                     "action": "sent a message",
                     "is_message": true,
-                    "seen_by_admin": false,
+                    "seen_by_admin": true,
                     "text": "Hi, still not syncing — could someone take another look today? It's affecting a few people on my team too.",
                     "at": 1789653295
                 }
