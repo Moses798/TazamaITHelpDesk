@@ -1,435 +1,434 @@
 {
-    "accounts": [
-        {
-            "email": "Namakau.Mulenga@tazamadesk.com",
-            "password": "employee123",
-            "role": "employee",
-            "name": "Namakau Mulenga",
-            "title": "Finance Dept."
-        },
-        {
-            "email": "moses.Chola@tazamadesk.com",
-            "password": "admin123",
-            "role": "admin",
-            "name": "Moses Chola",
-            "title": "IT Administrator"
-        }
-    ],
-    "agents": [
-        "Natasha Kunda",
-        "Chris Chipopola",
-        "Moses Chola",
-        "Chileshe Chileshe",
-        "Shadrick Bilali"
-    ],
-    "departments": [
-        "Administration",
-        "Finance",
-        "Human Resources",
-        "Security",
-        "Operations",
-        "Maintenance",
-        "Boomgate",
-        "Commercial",
-        "Dispatch"
-    ],
-    "categories": [
-        "Hardware",
-        "Software",
-        "Network",
-        "Account Access",
-        "Email",
-        "Printer",
-        "Security"
-
-    ],
-    "priorities": {
-        "Critical": {
-            "hours": 2
-        },
-        "High": {
-            "hours": 8
-        },
-        "Medium": {
-            "hours": 24
-        },
-        "Low": {
-            "hours": 72
-        }
+  "accounts": [
+    {
+      "email": "Namakau.Mulenga@tazamadesk.com",
+      "password": "employee123",
+      "role": "employee",
+      "name": "Namakau Mulenga",
+      "title": "Finance Dept."
     },
-    "statuses": [
-        "New",
-        "Assigned",
-        "In Progress",
-        "On Hold",
-        "Resolved",
-        "Closed"
-    ],
-    "kb_articles": [
+    {
+      "email": "moses.Chola@tazamadesk.com",
+      "password": "admin123",
+      "role": "admin",
+      "name": "Moses Chola",
+      "title": "IT Administrator"
+    }
+  ],
+  "agents": [
+    "Natasha kunda",
+    "Chris Chipopola",
+    "Moses Chola",
+    "Chileshe Chileshe",
+    "Shadrick bilali"
+  ],
+  "departments": [
+    "Administration",
+    "Finance",
+    "Human Resources",
+    "Security",
+    "Operations",
+    "Maintenance",
+    "Boomgate",
+    "Commercial",
+    "Dispatch"
+  ],
+  "categories": [
+    "Hardware",
+    "Software",
+    "Network",
+    "Account Access",
+    "Email",
+    "Printer",
+    "Security"
+  ],
+  "priorities": {
+    "Critical": {
+      "hours": 2
+    },
+    "High": {
+      "hours": 8
+    },
+    "Medium": {
+      "hours": 24
+    },
+    "Low": {
+      "hours": 72
+    }
+  },
+  "statuses": [
+    "New",
+    "Assigned",
+    "In Progress",
+    "On Hold",
+    "Resolved",
+    "Closed"
+  ],
+  "kb_articles": [
+    {
+      "title": "How to reset your network password",
+      "cat": "Account Access",
+      "views": 1204
+    },
+    {
+      "title": "Connecting to the office VPN",
+      "cat": "Network",
+      "views": 982
+    },
+    {
+      "title": "Setting up email on your phone",
+      "cat": "Email",
+      "views": 875
+    },
+    {
+      "title": "Requesting new hardware",
+      "cat": "Hardware",
+      "views": 640
+    },
+    {
+      "title": "Reporting a phishing email",
+      "cat": "Security",
+      "views": 1310
+    },
+    {
+      "title": "Fixing common printer jams",
+      "cat": "Printer",
+      "views": 512
+    }
+  ],
+  "tickets": [
+    {
+      "id": 4821,
+      "subject": "Outlook not syncing since this morning",
+      "dept": "Finance",
+      "cat": "Email",
+      "priority": "High",
+      "status": "In Progress",
+      "requester": "Angela Cruz",
+      "assignee": "Marcus Webb",
+      "desc": "Emails sent after 8am are not appearing in Sent folder. Rebooted twice, still failing to sync across devices.",
+      "history": [
         {
-            "title": "How to reset your network password",
-            "cat": "Account Access",
-            "views": 1204
+          "who": "Angela Cruz",
+          "role": "employee",
+          "action": "created this ticket",
+          "at": 1789547416
         },
         {
-            "title": "Connecting to the office VPN",
-            "cat": "Network",
-            "views": 982
+          "who": "Marcus Webb",
+          "role": "admin",
+          "action": "picked up this ticket",
+          "at": 1789548856
         },
         {
-            "title": "Setting up email on your phone",
-            "cat": "Email",
-            "views": 875
-        },
-        {
-            "title": "Requesting new hardware",
-            "cat": "Hardware",
-            "views": 640
-        },
-        {
-            "title": "Reporting a phishing email",
-            "cat": "Security",
-            "views": 1310
-        },
-        {
-            "title": "Fixing common printer jams",
-            "cat": "Printer",
-            "views": 512
+          "who": "Angela Cruz",
+          "role": "employee",
+          "action": "sent a message",
+          "is_message": true,
+          "seen_by_admin": false,
+          "text": "Hi, still not syncing — could someone take another look today? It's affecting a few people on my team too.",
+          "at": 1789558576
         }
-    ],
-    "tickets": [
+      ],
+      "created": 1789547416,
+      "closed_at": null
+    },
+    {
+      "id": 4820,
+      "subject": "Laptop won't power on after update",
+      "dept": "Sales",
+      "cat": "Hardware",
+      "priority": "Critical",
+      "status": "New",
+      "requester": "Brian Tembo",
+      "assignee": null,
+      "desc": "Dell Latitude froze during a Windows update overnight and now shows a black screen with no response to power button.",
+      "history": [
         {
-            "id": 4821,
-            "subject": "Outlook not syncing since this morning",
-            "dept": "Finance",
-            "cat": "Email",
-            "priority": "High",
-            "status": "In Progress",
-            "requester": "Angela Cruz",
-            "assignee": "Marcus Webb",
-            "desc": "Emails sent after 8am are not appearing in Sent folder. Rebooted twice, still failing to sync across devices.",
-            "history": [
-                {
-                    "who": "Angela Cruz",
-                    "role": "employee",
-                    "action": "created this ticket",
-                    "at": 1789547416
-                },
-                {
-                    "who": "Marcus Webb",
-                    "role": "admin",
-                    "action": "picked up this ticket",
-                    "at": 1789548856
-                },
-                {
-                    "who": "Angela Cruz",
-                    "role": "employee",
-                    "action": "sent a message",
-                    "is_message": true,
-                    "seen_by_admin": false,
-                    "text": "Hi, still not syncing — could someone take another look today? It's affecting a few people on my team too.",
-                    "at": 1789558576
-                }
-            ],
-            "created": 1789547416,
-            "closed_at": null
-        },
-        {
-            "id": 4820,
-            "subject": "Laptop won't power on after update",
-            "dept": "Sales",
-            "cat": "Hardware",
-            "priority": "Critical",
-            "status": "New",
-            "requester": "Brian Tembo",
-            "assignee": null,
-            "desc": "Dell Latitude froze during a Windows update overnight and now shows a black screen with no response to power button.",
-            "history": [
-                {
-                    "who": "Brian Tembo",
-                    "role": "employee",
-                    "action": "created this ticket",
-                    "at": 1789557136
-                }
-            ],
-            "created": 1789557136,
-            "closed_at": null
-        },
-        {
-            "id": 4819,
-            "subject": "Cannot access shared Finance drive",
-            "dept": "Finance",
-            "cat": "Account Access",
-            "priority": "High",
-            "status": "Assigned",
-            "requester": "Grace Mumba",
-            "assignee": "Marcus Webb",
-            "desc": "Getting 'access denied' on \\\\fileserver\\finance since permissions were updated yesterday.",
-            "history": [
-                {
-                    "who": "Grace Mumba",
-                    "role": "employee",
-                    "action": "created this ticket",
-                    "at": 1789538416
-                },
-                {
-                    "who": "Marcus Webb",
-                    "role": "admin",
-                    "action": "picked up this ticket",
-                    "at": 1789540576
-                }
-            ],
-            "created": 1789538416,
-            "closed_at": null
-        },
-        {
-            "id": 4818,
-            "subject": "VPN drops every 10 minutes remotely",
-            "dept": "Operations",
-            "cat": "Network",
-            "priority": "Medium",
-            "status": "In Progress",
-            "requester": "Kondwani Phiri",
-            "assignee": "Daniel Kim",
-            "desc": "Working from home, VPN client disconnects repeatedly, forcing re-authentication throughout the day.",
-            "history": [
-                {
-                    "who": "Kondwani Phiri",
-                    "role": "employee",
-                    "action": "created this ticket",
-                    "at": 1789509616
-                },
-                {
-                    "who": "Daniel Kim",
-                    "role": "admin",
-                    "action": "picked up this ticket",
-                    "at": 1789514656
-                }
-            ],
-            "created": 1789509616,
-            "closed_at": null
-        },
-        {
-            "id": 4817,
-            "subject": "New starter needs full account setup",
-            "dept": "Human Resources",
-            "cat": "Account Access",
-            "priority": "Medium",
-            "status": "New",
-            "requester": "Natasha Zulu",
-            "assignee": null,
-            "desc": "New hire starting Monday needs AD account, email, Slack, and Salesforce access provisioned.",
-            "history": [
-                {
-                    "who": "Natasha Zulu",
-                    "role": "employee",
-                    "action": "created this ticket",
-                    "at": 1789552816
-                }
-            ],
-            "created": 1789552816,
-            "closed_at": null
-        },
-        {
-            "id": 4816,
-            "subject": "Printer on 3rd floor jamming constantly",
-            "dept": "Operations",
-            "cat": "Printer",
-            "priority": "Low",
-            "status": "On Hold",
-            "requester": "James Banda",
-            "assignee": "Fatima Osei",
-            "desc": "HP LaserJet on the 3rd floor jams roughly every 5th print job, mostly on double-sided jobs. Awaiting replacement toner.",
-            "history": [
-                {
-                    "who": "James Banda",
-                    "role": "employee",
-                    "action": "created this ticket",
-                    "at": 1789452016
-                },
-                {
-                    "who": "Fatima Osei",
-                    "role": "admin",
-                    "action": "picked up this ticket",
-                    "at": 1789462816
-                }
-            ],
-            "created": 1789452016,
-            "closed_at": null
-        },
-        {
-            "id": 4815,
-            "subject": "Suspicious phishing email reported",
-            "dept": "Legal",
-            "cat": "Security",
-            "priority": "Critical",
-            "status": "Assigned",
-            "requester": "Mwansa Chola",
-            "assignee": "Marcus Webb",
-            "desc": "Received an email impersonating IT asking to reset password via external link. Reported before clicking.",
-            "history": [
-                {
-                    "who": "Mwansa Chola",
-                    "role": "employee",
-                    "action": "created this ticket",
-                    "at": 1789555696
-                },
-                {
-                    "who": "Marcus Webb",
-                    "role": "admin",
-                    "action": "picked up this ticket",
-                    "at": 1789556416
-                }
-            ],
-            "created": 1789555696,
-            "closed_at": null
-        },
-        {
-            "id": 4814,
-            "subject": "Salesforce dashboard loading blank",
-            "dept": "Sales",
-            "cat": "Software",
-            "priority": "Medium",
-            "status": "Resolved",
-            "requester": "Ruth Chanda",
-            "assignee": "Priya Nandy",
-            "desc": "Pipeline dashboard has been blank since the last release. Cleared cache did not help.",
-            "history": [
-                {
-                    "who": "Ruth Chanda",
-                    "role": "employee",
-                    "action": "created this ticket",
-                    "at": 1789488016
-                },
-                {
-                    "who": "Priya Nandy",
-                    "role": "admin",
-                    "action": "picked up this ticket",
-                    "at": 1789495216
-                }
-            ],
-            "created": 1789488016,
-            "closed_at": null
-        },
-        {
-            "id": 4813,
-            "subject": "Wi-Fi weak signal in meeting room B",
-            "dept": "Marketing",
-            "cat": "Network",
-            "priority": "Low",
-            "status": "Resolved",
-            "requester": "Chanda Mwape",
-            "assignee": "Daniel Kim",
-            "desc": "Signal frequently drops to one bar during client calls in meeting room B, second floor.",
-            "history": [
-                {
-                    "who": "Chanda Mwape",
-                    "role": "employee",
-                    "action": "created this ticket",
-                    "at": 1789387216
-                },
-                {
-                    "who": "Daniel Kim",
-                    "role": "admin",
-                    "action": "picked up this ticket",
-                    "at": 1789401616
-                }
-            ],
-            "created": 1789387216,
-            "closed_at": null
-        },
-        {
-            "id": 4812,
-            "subject": "Password reset for finance portal",
-            "dept": "Finance",
-            "cat": "Account Access",
-            "priority": "Low",
-            "status": "Closed",
-            "requester": "Given Mulenga",
-            "assignee": "Fatima Osei",
-            "desc": "Locked out of the finance reporting portal after three failed attempts.",
-            "closed_by": "Fatima Osei",
-            "resolution_note": "Reset the account password and unlocked the profile after verifying identity over the phone. Confirmed the user could log back in successfully.",
-            "history": [
-                {
-                    "who": "Given Mulenga",
-                    "role": "employee",
-                    "action": "created this ticket",
-                    "at": 1789308016
-                },
-                {
-                    "who": "Fatima Osei",
-                    "role": "admin",
-                    "action": "picked up this ticket",
-                    "at": 1789315216
-                },
-                {
-                    "who": "Fatima Osei",
-                    "role": "admin",
-                    "action": "closed this ticket",
-                    "note": "Reset the account password and unlocked the profile after verifying identity over the phone. Confirmed the user could log back in successfully.",
-                    "at": 1789326016
-                }
-            ],
-            "created": 1789308016,
-            "closed_at": 1789326016
-        },
-        {
-            "id": 4811,
-            "subject": "Monitor flickering intermittently",
-            "dept": "IT",
-            "cat": "Hardware",
-            "priority": "Low",
-            "status": "Closed",
-            "requester": "Esther Mwila",
-            "assignee": "Marcus Webb",
-            "desc": "Secondary monitor flickers when laptop is on battery power only.",
-            "closed_by": "Marcus Webb",
-            "resolution_note": "Updated the display driver and disabled power-saving dimming on battery mode. Flickering has not recurred after two days of use.",
-            "history": [
-                {
-                    "who": "Esther Mwila",
-                    "role": "employee",
-                    "action": "created this ticket",
-                    "at": 1789236016
-                },
-                {
-                    "who": "Marcus Webb",
-                    "role": "admin",
-                    "action": "picked up this ticket",
-                    "at": 1789243216
-                },
-                {
-                    "who": "Marcus Webb",
-                    "role": "admin",
-                    "action": "closed this ticket",
-                    "note": "Updated the display driver and disabled power-saving dimming on battery mode. Flickering has not recurred after two days of use.",
-                    "at": 1789272016
-                }
-            ],
-            "created": 1789236016,
-            "closed_at": 1789272016
-        },
-        {
-            "id": 4810,
-            "subject": "Teams calls dropping mid-meeting",
-            "dept": "Legal",
-            "cat": "Software",
-            "priority": "High",
-            "status": "New",
-            "requester": "Peter Sinkala",
-            "assignee": null,
-            "desc": "Teams calls disconnect roughly 15 minutes in, affecting client meetings twice this week.",
-            "history": [
-                {
-                    "who": "Peter Sinkala",
-                    "role": "employee",
-                    "action": "created this ticket",
-                    "at": 1789543816
-                }
-            ],
-            "created": 1789543816,
-            "closed_at": null
+          "who": "Brian Tembo",
+          "role": "employee",
+          "action": "created this ticket",
+          "at": 1789557136
         }
-    ]
+      ],
+      "created": 1789557136,
+      "closed_at": null
+    },
+    {
+      "id": 4819,
+      "subject": "Cannot access shared Finance drive",
+      "dept": "Finance",
+      "cat": "Account Access",
+      "priority": "High",
+      "status": "Assigned",
+      "requester": "Grace Mumba",
+      "assignee": "Marcus Webb",
+      "desc": "Getting 'access denied' on \\\\fileserver\\finance since permissions were updated yesterday.",
+      "history": [
+        {
+          "who": "Grace Mumba",
+          "role": "employee",
+          "action": "created this ticket",
+          "at": 1789538416
+        },
+        {
+          "who": "Marcus Webb",
+          "role": "admin",
+          "action": "picked up this ticket",
+          "at": 1789540576
+        }
+      ],
+      "created": 1789538416,
+      "closed_at": null
+    },
+    {
+      "id": 4818,
+      "subject": "VPN drops every 10 minutes remotely",
+      "dept": "Operations",
+      "cat": "Network",
+      "priority": "Medium",
+      "status": "In Progress",
+      "requester": "Kondwani Phiri",
+      "assignee": "Daniel Kim",
+      "desc": "Working from home, VPN client disconnects repeatedly, forcing re-authentication throughout the day.",
+      "history": [
+        {
+          "who": "Kondwani Phiri",
+          "role": "employee",
+          "action": "created this ticket",
+          "at": 1789509616
+        },
+        {
+          "who": "Daniel Kim",
+          "role": "admin",
+          "action": "picked up this ticket",
+          "at": 1789514656
+        }
+      ],
+      "created": 1789509616,
+      "closed_at": null
+    },
+    {
+      "id": 4817,
+      "subject": "New starter needs full account setup",
+      "dept": "Human Resources",
+      "cat": "Account Access",
+      "priority": "Medium",
+      "status": "New",
+      "requester": "Natasha Zulu",
+      "assignee": null,
+      "desc": "New hire starting Monday needs AD account, email, Slack, and Salesforce access provisioned.",
+      "history": [
+        {
+          "who": "Natasha Zulu",
+          "role": "employee",
+          "action": "created this ticket",
+          "at": 1789552816
+        }
+      ],
+      "created": 1789552816,
+      "closed_at": null
+    },
+    {
+      "id": 4816,
+      "subject": "Printer on 3rd floor jamming constantly",
+      "dept": "Operations",
+      "cat": "Printer",
+      "priority": "Low",
+      "status": "On Hold",
+      "requester": "James Banda",
+      "assignee": "Fatima Osei",
+      "desc": "HP LaserJet on the 3rd floor jams roughly every 5th print job, mostly on double-sided jobs. Awaiting replacement toner.",
+      "history": [
+        {
+          "who": "James Banda",
+          "role": "employee",
+          "action": "created this ticket",
+          "at": 1789452016
+        },
+        {
+          "who": "Fatima Osei",
+          "role": "admin",
+          "action": "picked up this ticket",
+          "at": 1789462816
+        }
+      ],
+      "created": 1789452016,
+      "closed_at": null
+    },
+    {
+      "id": 4815,
+      "subject": "Suspicious phishing email reported",
+      "dept": "Legal",
+      "cat": "Security",
+      "priority": "Critical",
+      "status": "Assigned",
+      "requester": "Mwansa Chola",
+      "assignee": "Marcus Webb",
+      "desc": "Received an email impersonating IT asking to reset password via external link. Reported before clicking.",
+      "history": [
+        {
+          "who": "Mwansa Chola",
+          "role": "employee",
+          "action": "created this ticket",
+          "at": 1789555696
+        },
+        {
+          "who": "Marcus Webb",
+          "role": "admin",
+          "action": "picked up this ticket",
+          "at": 1789556416
+        }
+      ],
+      "created": 1789555696,
+      "closed_at": null
+    },
+    {
+      "id": 4814,
+      "subject": "Salesforce dashboard loading blank",
+      "dept": "Sales",
+      "cat": "Software",
+      "priority": "Medium",
+      "status": "Resolved",
+      "requester": "Ruth Chanda",
+      "assignee": "Priya Nandy",
+      "desc": "Pipeline dashboard has been blank since the last release. Cleared cache did not help.",
+      "history": [
+        {
+          "who": "Ruth Chanda",
+          "role": "employee",
+          "action": "created this ticket",
+          "at": 1789488016
+        },
+        {
+          "who": "Priya Nandy",
+          "role": "admin",
+          "action": "picked up this ticket",
+          "at": 1789495216
+        }
+      ],
+      "created": 1789488016,
+      "closed_at": null
+    },
+    {
+      "id": 4813,
+      "subject": "Wi-Fi weak signal in meeting room B",
+      "dept": "Marketing",
+      "cat": "Network",
+      "priority": "Low",
+      "status": "Resolved",
+      "requester": "Chanda Mwape",
+      "assignee": "Daniel Kim",
+      "desc": "Signal frequently drops to one bar during client calls in meeting room B, second floor.",
+      "history": [
+        {
+          "who": "Chanda Mwape",
+          "role": "employee",
+          "action": "created this ticket",
+          "at": 1789387216
+        },
+        {
+          "who": "Daniel Kim",
+          "role": "admin",
+          "action": "picked up this ticket",
+          "at": 1789401616
+        }
+      ],
+      "created": 1789387216,
+      "closed_at": null
+    },
+    {
+      "id": 4812,
+      "subject": "Password reset for finance portal",
+      "dept": "Finance",
+      "cat": "Account Access",
+      "priority": "Low",
+      "status": "Closed",
+      "requester": "Given Mulenga",
+      "assignee": "Fatima Osei",
+      "desc": "Locked out of the finance reporting portal after three failed attempts.",
+      "closed_by": "Fatima Osei",
+      "resolution_note": "Reset the account password and unlocked the profile after verifying identity over the phone. Confirmed the user could log back in successfully.",
+      "history": [
+        {
+          "who": "Given Mulenga",
+          "role": "employee",
+          "action": "created this ticket",
+          "at": 1789308016
+        },
+        {
+          "who": "Fatima Osei",
+          "role": "admin",
+          "action": "picked up this ticket",
+          "at": 1789315216
+        },
+        {
+          "who": "Fatima Osei",
+          "role": "admin",
+          "action": "closed this ticket",
+          "note": "Reset the account password and unlocked the profile after verifying identity over the phone. Confirmed the user could log back in successfully.",
+          "at": 1789326016
+        }
+      ],
+      "created": 1789308016,
+      "closed_at": 1789326016
+    },
+    {
+      "id": 4811,
+      "subject": "Monitor flickering intermittently",
+      "dept": "IT",
+      "cat": "Hardware",
+      "priority": "Low",
+      "status": "Closed",
+      "requester": "Esther Mwila",
+      "assignee": "Marcus Webb",
+      "desc": "Secondary monitor flickers when laptop is on battery power only.",
+      "closed_by": "Marcus Webb",
+      "resolution_note": "Updated the display driver and disabled power-saving dimming on battery mode. Flickering has not recurred after two days of use.",
+      "history": [
+        {
+          "who": "Esther Mwila",
+          "role": "employee",
+          "action": "created this ticket",
+          "at": 1789236016
+        },
+        {
+          "who": "Marcus Webb",
+          "role": "admin",
+          "action": "picked up this ticket",
+          "at": 1789243216
+        },
+        {
+          "who": "Marcus Webb",
+          "role": "admin",
+          "action": "closed this ticket",
+          "note": "Updated the display driver and disabled power-saving dimming on battery mode. Flickering has not recurred after two days of use.",
+          "at": 1789272016
+        }
+      ],
+      "created": 1789236016,
+      "closed_at": 1789272016
+    },
+    {
+      "id": 4810,
+      "subject": "Teams calls dropping mid-meeting",
+      "dept": "Legal",
+      "cat": "Software",
+      "priority": "High",
+      "status": "New",
+      "requester": "Peter Sinkala",
+      "assignee": null,
+      "desc": "Teams calls disconnect roughly 15 minutes in, affecting client meetings twice this week.",
+      "history": [
+        {
+          "who": "Peter Sinkala",
+          "role": "employee",
+          "action": "created this ticket",
+          "at": 1789543816
+        }
+      ],
+      "created": 1789543816,
+      "closed_at": null
+    }
+  ]
 }
