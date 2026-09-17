@@ -89,7 +89,7 @@ if ($role === 'employee'):
         <div class="display" style="font-size:21px;font-weight:700;margin-bottom:6px;">Hi <?= h($firstName) ?>, how can we help?</div>
         <div style="opacity:.85;font-size:13.5px;">Report a new issue and our team will pick it up right away.</div>
       </div>
-      <a href="new_ticket.php" class="btn" style="background:#fff;color:var(--brand-dark);font-weight:700;">+ Report an issue</a>
+      <a href="#report-issue" class="btn" style="background:#fff;color:var(--brand-dark);font-weight:700;" onclick="openReportIssue(event)">+ Report an issue</a>
     </div>
 
     <div class="grid-stats" style="margin-bottom:24px;">
@@ -104,6 +104,61 @@ if ($role === 'employee'):
       <a href="tickets.php" style="font-size:12.5px;color:var(--brand);font-weight:600;">View all &rarr;</a>
     </div>
     <div class="card"><?php td_render_ticket_rows($mine, $priorities, true) ?></div>
+
+    <div id="report-issue" class="modal-overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="report-issue-title" onclick="closeReportIssueOnOverlay(event)">
+      <div class="modal-box">
+        <div class="modal-head">
+          <div>
+            <div id="report-issue-title" class="display" style="font-size:17px;font-weight:700;">Report an issue</div>
+            <div style="font-size:12.5px;color:var(--text-mid);margin-top:2px;">Tell us what's going wrong — we'll route it to the right team.</div>
+          </div>
+          <button type="button" class="btn btn-ghost" aria-label="Close report issue form" onclick="closeReportIssue()" style="font-size:22px;padding:4px 8px;">&times;</button>
+        </div>
+        <form method="post" action="new_ticket.php" class="modal-body">
+          <div>
+            <label class="field-label" for="report-subject">Subject</label>
+            <input id="report-subject" type="text" name="subject" placeholder="e.g. Cannot connect to office Wi-Fi" required>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <div>
+              <label class="field-label" for="report-dept">Department</label>
+              <select id="report-dept" name="dept">
+                <?php foreach ($store['departments'] as $d): ?><option value="<?= h($d) ?>"><?= h($d) ?></option><?php endforeach; ?>
+              </select>
+            </div>
+            <div>
+              <label class="field-label" for="report-cat">Category</label>
+              <select id="report-cat" name="cat">
+                <?php foreach ($store['categories'] as $c): ?><option value="<?= h($c) ?>"><?= h($c) ?></option><?php endforeach; ?>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="field-label">Priority</label>
+            <div style="display:flex;gap:8px;">
+              <?php foreach (array_keys($store['priorities']) as $i => $p): ?>
+                <label class="priority-btn <?= $i === 2 ? 'selected' : '' ?>" style="display:flex;align-items:center;justify-content:center;">
+                  <input type="radio" name="priority" value="<?= h($p) ?>" <?= $i === 2 ? 'checked' : '' ?> style="width:auto;margin-right:6px;">
+                  <?= h($p) ?>
+                </label>
+              <?php endforeach; ?>
+            </div>
+          </div>
+
+          <div>
+            <label class="field-label" for="report-desc">Description</label>
+            <textarea id="report-desc" name="desc" rows="4" placeholder="Describe the issue, what you expected, and any error messages..."></textarea>
+          </div>
+
+          <div class="modal-foot" style="margin:0 -26px -26px;">
+            <button type="button" class="btn btn-ghost" onclick="closeReportIssue()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Submit ticket</button>
+          </div>
+        </form>
+      </div>
+    </div>
 
 <?php else: /* admin */
     $open = count(array_filter($tickets, fn($t) => !in_array($t['status'], ['Resolved', 'Closed'], true)));
@@ -164,5 +219,32 @@ if ($role === 'employee'):
     </div>
     <div class="card"><?php td_render_ticket_rows($needsAttention, $priorities, true) ?></div>
 <?php endif; ?>
+
+<script>
+function openReportIssue(event) {
+  if (event) event.preventDefault();
+  var modal = document.getElementById('report-issue');
+  if (!modal) return;
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  var subject = document.getElementById('report-subject');
+  if (subject) subject.focus();
+}
+
+function closeReportIssue() {
+  var modal = document.getElementById('report-issue');
+  if (!modal) return;
+  modal.style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function closeReportIssueOnOverlay(event) {
+  if (event.target === event.currentTarget) closeReportIssue();
+}
+
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') closeReportIssue();
+});
+</script>
 
 <?php require __DIR__ . '/includes/layout_bottom.php'; ?>

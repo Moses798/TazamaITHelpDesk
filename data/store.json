@@ -16,11 +16,11 @@
         }
     ],
     "agents": [
-        "Natasha kunda",
+        "Natasha Kunda",
         "Chris Chipopola",
         "Moses Chola",
         "Chileshe Chileshe",
-        "Shadrick bilali"
+        "Shadrick Bilali"
     ],
     "departments": [
         "Administration",
@@ -30,7 +30,8 @@
         "Operations",
         "Maintenance",
         "Boomgate",
-        "Commercial"
+        "Commercial",
+        "Dispatch"
     ],
     "categories": [
         "Hardware",
@@ -40,6 +41,7 @@
         "Email",
         "Printer",
         "Security"
+
     ],
     "priorities": {
         "Critical": {

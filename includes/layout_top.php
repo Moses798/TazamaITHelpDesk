@@ -8,6 +8,7 @@
 $user = td_current_user();
 $role = $user['role'] ?? 'employee';
 $store = td_load_store();
+$is_dashboard = basename($_SERVER['PHP_SELF']) === 'dashboard.php';
 
 $unseen_bubbles = [];
 if ($role === 'admin') {
@@ -27,7 +28,7 @@ if ($role === 'admin') {
 $employee_nav = [
     ['key' => 'dashboard', 'label' => 'Dashboard', 'href' => 'dashboard.php'],
     ['key' => 'my-tickets', 'label' => 'My Tickets', 'href' => 'tickets.php'],
-    ['key' => 'new-ticket', 'label' => 'Report an Issue', 'href' => 'new_ticket.php'],
+    ['key' => 'new-ticket', 'label' => 'Report an Issue', 'href' => $is_dashboard ? '#report-issue' : 'new_ticket.php'],
 ];
 $admin_nav = [
     ['key' => 'dashboard', 'label' => 'Dashboard', 'href' => 'dashboard.php'],
@@ -61,7 +62,7 @@ $nav = $role === 'admin' ? $admin_nav : $employee_nav;
     <div class="nav-label">MENU</div>
     <nav>
       <?php foreach ($nav as $item): ?>
-        <a class="nav-item <?= $active_nav === $item['key'] ? 'active' : '' ?>" href="<?= h($item['href']) ?>"><?= h($item['label']) ?></a>
+        <a class="nav-item <?= $active_nav === $item['key'] ? 'active' : '' ?>" href="<?= h($item['href']) ?>"<?= $item['key'] === 'new-ticket' && $is_dashboard && $role === 'employee' ? ' onclick="openReportIssue(event)"' : '' ?>><?= h($item['label']) ?></a>
       <?php endforeach; ?>
     </nav>
     <div class="sidebar-footer">
@@ -87,7 +88,11 @@ $nav = $role === 'admin' ? $admin_nav : $employee_nav;
         <span class="badge <?= $role === 'admin' ? 'role-badge-admin' : 'role-badge-employee' ?>">
           <?= $role === 'admin' ? 'IT Administrator' : 'Employee' ?>
         </span>
-        <a href="new_ticket.php" class="btn btn-primary hide-mobile">+ New ticket</a>
+        <?php if ($role === 'employee' && $is_dashboard): ?>
+          <a href="#report-issue" class="btn btn-primary hide-mobile" onclick="openReportIssue(event)">+ New ticket</a>
+        <?php else: ?>
+          <a href="new_ticket.php" class="btn btn-primary hide-mobile">+ New ticket</a>
+        <?php endif; ?>
         <div style="width:1px;height:26px;background:var(--border)" class="hide-mobile"></div>
         <div class="hide-mobile" style="display:flex;align-items:center;gap:9px;">
           <?php $ac = td_avatar_colors($user['name'] ?? ''); ?>
