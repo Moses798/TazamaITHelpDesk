@@ -16,10 +16,27 @@ define('SEED_FILE', BASE_PATH . '/data/seed.json');
 /* Data store                                                          */
 /* ------------------------------------------------------------------ */
 
-/** Build the working store from the seed file on first run. */
+/** Build the working store from the seed file on first run, or recover if the store file is corrupt. */
 function td_init_store() {
-    if (file_exists(DATA_FILE)) return;
+    $needs_init = !file_exists(DATA_FILE);
+
+    if (!$needs_init) {
+        $raw = @file_get_contents(DATA_FILE);
+        $decoded = $raw === false ? null : json_decode($raw, true);
+        $needs_init = !is_array($decoded) || !isset($decoded['accounts']) || !isset($decoded['tickets']);
+    }
+
+    if (!$needs_init) return;
+
+    if (!file_exists(SEED_FILE)) {
+        return;
+    }
+
     $seed = json_decode(file_get_contents(SEED_FILE), true);
+    if (!is_array($seed)) {
+        return;
+    }
+
     $now = time();
 
     foreach ($seed['tickets'] as &$t) {
@@ -46,7 +63,10 @@ function td_init_store() {
 
 function td_load_store() {
     td_init_store();
-    $raw = file_get_contents(DATA_FILE);
+    $raw = @file_get_contents(DATA_FILE);
+    if ($raw === false) {
+        return null;
+    }
     return json_decode($raw, true);
 }
 

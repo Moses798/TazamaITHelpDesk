@@ -1,10 +1,10 @@
 {
   "accounts": [
-    { "email": "angela.cruz@tazamadesk.com", "password": "employee123", "role": "employee", "name": "Angela Cruz", "title": "Finance Dept." },
-    { "email": "marcus.webb@tazamadesk.com", "password": "admin123", "role": "admin", "name": "Marcus Webb", "title": "IT Administrator" }
+    { "email": "Chileshe.Chileshe@tazamadesk.com", "password": "employee123", "role": "employee", "name": "Angela Cruz", "title": "Finance Dept." },
+    { "email": "moses.Chola@tazamadesk.com", "password": "admin123", "role": "admin", "name": "Marcus Webb", "title": "IT Administrator" }
   ],
-  "agents": ["Priya Nandy", "Marcus Webb", "Fatima Osei", "Daniel Kim"],
-  "departments": ["IT", "Finance", "Human Resources", "Sales", "Operations", "Marketing", "Legal"],
+  "agents": ["Natasha kunda", "Chris Chipopola", "Moses Chola", "Chileshe Chileshe", "Shadrick Bilali"],
+  "departments": ["Administration", "Finance", "Human Resources", "Security", "Operations", "Maintenance", "Boomgate","Commercial"],
   "categories": ["Hardware", "Software", "Network", "Account Access", "Email", "Printer", "Security"],
   "priorities": {
     "Critical": { "hours": 2 },
