@@ -11,7 +11,7 @@ $needle = strtolower($q);
 $ticketMatches = $q === '' ? [] : array_values(array_filter($store['tickets'], function ($t) use ($needle) {
     return str_contains(strtolower($t['subject']), $needle) || str_contains((string) $t['id'], $needle);
 }));
-$articleMatches = $q === '' ? [] : array_values(array_filter($store['kb_articles'], function ($a) use ($needle) {
+$articleMatches = ($q === '' || $user['role'] !== 'admin') ? [] : array_values(array_filter($store['kb_articles'], function ($a) use ($needle) {
     return str_contains(strtolower($a['title']), $needle) || str_contains(strtolower($a['cat']), $needle);
 }));
 

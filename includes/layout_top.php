@@ -28,7 +28,6 @@ $employee_nav = [
     ['key' => 'dashboard', 'label' => 'Dashboard', 'href' => 'dashboard.php'],
     ['key' => 'my-tickets', 'label' => 'My Tickets', 'href' => 'tickets.php'],
     ['key' => 'new-ticket', 'label' => 'Report an Issue', 'href' => 'new_ticket.php'],
-    ['key' => 'kb', 'label' => 'Knowledge Base', 'href' => 'kb.php'],
 ];
 $admin_nav = [
     ['key' => 'dashboard', 'label' => 'Dashboard', 'href' => 'dashboard.php'],

@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/includes/config.php';
-td_require_login();
+td_require_role('admin');
 
 $user = td_current_user();
 $store = td_load_store();
