@@ -11,6 +11,7 @@ session_start();
 define('BASE_PATH', dirname(__DIR__));
 define('DATA_FILE', BASE_PATH . '/data/store.json');
 define('SEED_FILE', BASE_PATH . '/data/seed.json');
+require_once __DIR__ . '/priority.php';
 
 // ── Tazai AI Enable Switch ────────────────────────────────────────────────────
 // Set to true ONLY when development is complete and Tazai is ready for employees.

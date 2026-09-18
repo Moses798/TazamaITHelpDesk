@@ -117,7 +117,7 @@ if ($role === 'employee'):
           </div>
           <button type="button" class="btn btn-ghost" aria-label="Close report issue form" onclick="closeReportIssue()" style="font-size:22px;padding:4px 8px;">&times;</button>
         </div>
-        <form method="post" action="new_ticket.php" class="modal-body">
+        <form method="post" action="new_ticket.php" class="modal-body" data-priority-form>
           <div>
             <label class="field-label" for="report-subject">Subject</label>
             <input id="report-subject" type="text" name="subject" placeholder="e.g. Cannot connect to office Wi-Fi" required>
@@ -126,13 +126,13 @@ if ($role === 'employee'):
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
             <div>
               <label class="field-label" for="report-dept">Department</label>
-              <select id="report-dept" name="dept">
+              <select id="report-dept" name="dept" data-priority-dept>
                 <?php foreach ($store['departments'] as $d): ?><option value="<?= h($d) ?>"><?= h($d) ?></option><?php endforeach; ?>
               </select>
             </div>
             <div>
               <label class="field-label" for="report-cat">Category</label>
-              <select id="report-cat" name="cat">
+              <select id="report-cat" name="cat" data-priority-cat>
                 <?php foreach ($store['categories'] as $c): ?><option value="<?= h($c) ?>"><?= h($c) ?></option><?php endforeach; ?>
               </select>
             </div>
@@ -140,14 +140,11 @@ if ($role === 'employee'):
 
           <div>
             <label class="field-label">Priority</label>
-            <div style="display:flex;gap:8px;">
-              <?php foreach (array_keys($store['priorities']) as $i => $p): ?>
-                <label class="priority-btn <?= $i === 2 ? 'selected' : '' ?>" style="display:flex;align-items:center;justify-content:center;">
-                  <input type="radio" name="priority" value="<?= h($p) ?>" <?= $i === 2 ? 'checked' : '' ?> style="width:auto;margin-right:6px;">
-                  <?= h($p) ?>
-                </label>
-              <?php endforeach; ?>
-            </div>
+          <div>
+            <label class="field-label">Priority</label>
+            <div data-priority-indicator style="display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:8px;font-size:14px;font-weight:600;background:#f4f3f1;color:#5C5854;border:1.5px solid #e4e3e0;margin-top:2px;min-width:160px;user-select:none;pointer-events:none;">Select department and category to determine priority.</div>
+            <input type="hidden" name="priority" data-priority-value value="">
+            <p data-priority-description style="margin:6px 0 0;font-size:12px;color:var(--text-mid);line-height:1.5;"></p>
           </div>
 
           <div>
@@ -250,4 +247,5 @@ document.addEventListener('keydown', function (event) {
 });
 </script>
 
+<script>window.TD_PRIORITY_MATRIX = <?= json_encode(td_priority_matrix(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>;</script>
 <?php require __DIR__ . '/includes/layout_bottom.php'; ?>
