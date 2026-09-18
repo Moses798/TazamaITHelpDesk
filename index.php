@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: dashboard.php');
         exit;
     }
-    $error = "We couldn't verify those credentials. Check your email and password, or use a demo account below.";
+    $error = "We couldn't verify those credentials. Please check your email and password.";
 }
 ?>
 <!doctype html>
@@ -65,24 +65,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <button type="submit" class="btn btn-primary" style="justify-content:center;padding:11px 16px;font-size:14px;">Log in</button>
       </form>
 
-      <div style="margin-top:22px;background:var(--bg-app);border:1px solid var(--border);border-radius:14px;padding:14px;">
-        <div style="font-size:11.5px;font-weight:700;color:var(--text-mid);letter-spacing:.3px;margin-bottom:10px;">DEMO ACCOUNTS — CLICK TO LOG IN INSTANTLY</div>
-        <?php foreach ($store['accounts'] as $a): ?>
-          <form method="post" action="index.php" style="margin:0;">
-            <input type="hidden" name="email" value="<?= h($a['email']) ?>">
-            <input type="hidden" name="password" value="<?= h($a['password']) ?>">
-            <button type="submit" class="demo-account">
-              <?php $ac = td_avatar_colors($a['name']); ?>
-              <div class="avatar" style="width:28px;height:28px;font-size:11px;background:<?= $ac[0] ?>;color:<?= $ac[1] ?>;"><?= h(td_initials($a['name'])) ?></div>
-              <div style="flex:1;min-width:0;">
-                <div style="font-size:12.5px;font-weight:600;color:var(--text-dark);"><?= h($a['name']) ?> · <?= h($a['title']) ?></div>
-                <div class="mono" style="font-size:11px;color:var(--text-faint);"><?= h($a['email']) ?> / <?= h($a['password']) ?></div>
-              </div>
-              <span style="font-size:11px;font-weight:600;color:var(--brand);">Log in</span>
-            </button>
-          </form>
-        <?php endforeach; ?>
-      </div>
     </div>
     <div style="text-align:center;font-size:11.5px;color:var(--text-faint);margin-top:20px;">
       Protected enterprise system · Contact IT if you need access
