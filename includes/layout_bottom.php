@@ -84,6 +84,8 @@
   </button>
 </div>
 
+<script src="assets/priority.js"></script>
+
 <style>
 .tazai-msg { font-size:13px; line-height:1.45; max-width:85%; padding:9px 12px; border-radius:12px; word-break:break-word; }
 .tazai-msg-agent { background:#f4f3f1; color:#2B2622; align-self:flex-start; border-bottom-left-radius:4px; }

@@ -112,13 +112,13 @@
                     "who": "Angela Cruz",
                     "role": "employee",
                     "action": "created this ticket",
-                    "at": 1789642135
+                    "at": 1789642402
                 },
                 {
                     "who": "Marcus Webb",
                     "role": "admin",
                     "action": "picked up this ticket",
-                    "at": 1789643575
+                    "at": 1789643842
                 },
                 {
                     "who": "Angela Cruz",
@@ -127,10 +127,10 @@
                     "is_message": true,
                     "seen_by_admin": true,
                     "text": "Hi, still not syncing — could someone take another look today? It's affecting a few people on my team too.",
-                    "at": 1789653295
+                    "at": 1789653562
                 }
             ],
-            "created": 1789642135,
+            "created": 1789642402,
             "closed_at": null
         },
         {
@@ -148,10 +148,10 @@
                     "who": "Brian Tembo",
                     "role": "employee",
                     "action": "created this ticket",
-                    "at": 1789651855
+                    "at": 1789652122
                 }
             ],
-            "created": 1789651855,
+            "created": 1789652122,
             "closed_at": null
         },
         {
@@ -169,16 +169,16 @@
                     "who": "Grace Mumba",
                     "role": "employee",
                     "action": "created this ticket",
-                    "at": 1789633135
+                    "at": 1789633402
                 },
                 {
                     "who": "Marcus Webb",
                     "role": "admin",
                     "action": "picked up this ticket",
-                    "at": 1789635295
+                    "at": 1789635562
                 }
             ],
-            "created": 1789633135,
+            "created": 1789633402,
             "closed_at": null
         },
         {
@@ -196,16 +196,16 @@
                     "who": "Kondwani Phiri",
                     "role": "employee",
                     "action": "created this ticket",
-                    "at": 1789604335
+                    "at": 1789604602
                 },
                 {
                     "who": "Daniel Kim",
                     "role": "admin",
                     "action": "picked up this ticket",
-                    "at": 1789609375
+                    "at": 1789609642
                 }
             ],
-            "created": 1789604335,
+            "created": 1789604602,
             "closed_at": null
         },
         {
@@ -223,10 +223,10 @@
                     "who": "Natasha Zulu",
                     "role": "employee",
                     "action": "created this ticket",
-                    "at": 1789647535
+                    "at": 1789647802
                 }
             ],
-            "created": 1789647535,
+            "created": 1789647802,
             "closed_at": null
         },
         {
@@ -244,16 +244,16 @@
                     "who": "James Banda",
                     "role": "employee",
                     "action": "created this ticket",
-                    "at": 1789546735
+                    "at": 1789547002
                 },
                 {
                     "who": "Fatima Osei",
                     "role": "admin",
                     "action": "picked up this ticket",
-                    "at": 1789557535
+                    "at": 1789557802
                 }
             ],
-            "created": 1789546735,
+            "created": 1789547002,
             "closed_at": null
         },
         {
@@ -271,16 +271,16 @@
                     "who": "Mwansa Chola",
                     "role": "employee",
                     "action": "created this ticket",
-                    "at": 1789650415
+                    "at": 1789650682
                 },
                 {
                     "who": "Marcus Webb",
                     "role": "admin",
                     "action": "picked up this ticket",
-                    "at": 1789651135
+                    "at": 1789651402
                 }
             ],
-            "created": 1789650415,
+            "created": 1789650682,
             "closed_at": null
         },
         {
@@ -298,16 +298,16 @@
                     "who": "Ruth Chanda",
                     "role": "employee",
                     "action": "created this ticket",
-                    "at": 1789582735
+                    "at": 1789583002
                 },
                 {
                     "who": "Priya Nandy",
                     "role": "admin",
                     "action": "picked up this ticket",
-                    "at": 1789589935
+                    "at": 1789590202
                 }
             ],
-            "created": 1789582735,
+            "created": 1789583002,
             "closed_at": null
         },
         {
@@ -325,16 +325,16 @@
                     "who": "Chanda Mwape",
                     "role": "employee",
                     "action": "created this ticket",
-                    "at": 1789481935
+                    "at": 1789482202
                 },
                 {
                     "who": "Daniel Kim",
                     "role": "admin",
                     "action": "picked up this ticket",
-                    "at": 1789496335
+                    "at": 1789496602
                 }
             ],
-            "created": 1789481935,
+            "created": 1789482202,
             "closed_at": null
         },
         {
@@ -354,24 +354,24 @@
                     "who": "Given Mulenga",
                     "role": "employee",
                     "action": "created this ticket",
-                    "at": 1789402735
+                    "at": 1789403002
                 },
                 {
                     "who": "Fatima Osei",
                     "role": "admin",
                     "action": "picked up this ticket",
-                    "at": 1789409935
+                    "at": 1789410202
                 },
                 {
                     "who": "Fatima Osei",
                     "role": "admin",
                     "action": "closed this ticket",
                     "note": "Reset the account password and unlocked the profile after verifying identity over the phone. Confirmed the user could log back in successfully.",
-                    "at": 1789420735
+                    "at": 1789421002
                 }
             ],
-            "created": 1789402735,
-            "closed_at": 1789420735
+            "created": 1789403002,
+            "closed_at": 1789421002
         },
         {
             "id": 4811,
@@ -390,24 +390,24 @@
                     "who": "Esther Mwila",
                     "role": "employee",
                     "action": "created this ticket",
-                    "at": 1789330735
+                    "at": 1789331002
                 },
                 {
                     "who": "Marcus Webb",
                     "role": "admin",
                     "action": "picked up this ticket",
-                    "at": 1789337935
+                    "at": 1789338202
                 },
                 {
                     "who": "Marcus Webb",
                     "role": "admin",
                     "action": "closed this ticket",
                     "note": "Updated the display driver and disabled power-saving dimming on battery mode. Flickering has not recurred after two days of use.",
-                    "at": 1789366735
+                    "at": 1789367002
                 }
             ],
-            "created": 1789330735,
-            "closed_at": 1789366735
+            "created": 1789331002,
+            "closed_at": 1789367002
         },
         {
             "id": 4810,
@@ -424,11 +424,69 @@
                     "who": "Peter Sinkala",
                     "role": "employee",
                     "action": "created this ticket",
-                    "at": 1789638535
+                    "at": 1789638802
                 }
             ],
-            "created": 1789638535,
+            "created": 1789638802,
             "closed_at": null
+        },
+        {
+            "id": 4822,
+            "subject": "System Maintenance",
+            "dept": "Operations",
+            "cat": "Network",
+            "priority": "Critical",
+            "status": "Closed",
+            "requester": "Angela Cruz",
+            "assignee": "Moses Chola",
+            "created": 1789655583,
+            "desc": "Not working",
+            "closed_at": 1789655800,
+            "history": [
+                {
+                    "who": "Angela Cruz",
+                    "role": "employee",
+                    "action": "created this ticket",
+                    "at": 1789655583
+                },
+                {
+                    "who": "Angela Cruz",
+                    "role": "employee",
+                    "action": "sent a message",
+                    "text": "impact",
+                    "is_message": true,
+                    "seen_by_admin": true,
+                    "seen_by_requester": true,
+                    "at": 1789655606
+                },
+                {
+                    "who": "Marcus Webb",
+                    "role": "admin",
+                    "at": 1789655770,
+                    "action": "assigned this ticket to Moses Chola"
+                },
+                {
+                    "who": "Marcus Webb",
+                    "role": "admin",
+                    "at": 1789655779,
+                    "action": "changed status to On Hold"
+                },
+                {
+                    "who": "Marcus Webb",
+                    "role": "admin",
+                    "at": 1789655787,
+                    "action": "changed status to Resolved"
+                },
+                {
+                    "who": "Marcus Webb",
+                    "role": "admin",
+                    "at": 1789655800,
+                    "action": "closed this ticket",
+                    "note": "Done"
+                }
+            ],
+            "closed_by": "Marcus Webb",
+            "resolution_note": "Done"
         }
     ]
 }
