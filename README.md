@@ -1,70 +1,40 @@
-# TazamaDesk — PHP Edition
+# TazamaDesk — IT Help Desk
 
-A server-rendered PHP port of the TazamaDesk IT Help Desk & Ticket Management
-system. No database setup required — data is stored in a single JSON file
-(`data/store.json`), auto-created from `data/seed.json` on first run.
+IT ticketing system for Tazama Petroleum Products Limited. Built for the IT department to log, track, and resolve employee support requests.
 
-## Requirements
+## What it does
 
-- PHP 7.4+ (tested on PHP 8.3). No extensions beyond the PHP defaults are required.
+Employees submit IT tickets through a web form. The IT team gets a shared dashboard where they can see open tickets, assign them, update status, and close them out. There's also a knowledge base for common issues and a reports page.
 
-## Running it in Visual Studio Code
+## How tickets work
 
-1. Install the **PHP** extension (or **PHP Intelephense**) for syntax support — optional, just for editing.
-2. Open this folder (`tazamadesk-php`) in VS Code.
-3. Open a terminal in VS Code (`` Ctrl+` ``) and run:
-   ```
-   php -S localhost:8000
-   ```
-4. Open **http://localhost:8000** in your browser.
+When an employee logs a ticket, they pick their department and the type of issue. The system figures out the priority automatically based on those two things — the employee never sets it manually. A finance department network issue gets a different priority than the same issue in admin, because the business impact is different.
 
-That's it — no `composer install`, no build step, no database. If you have the
-**PHP Server** VS Code extension installed, you can also just right-click
-`index.php` → "Start PHP Server" instead of step 3.
+The priority matrix covers 9 departments and 7 issue types. It's enforced on the server, so no one can change it from the browser.
 
-### Using XAMPP / WAMP / MAMP instead
+## Tech
 
-Copy the `tazamadesk-php` folder into your `htdocs` (or `www`) directory and
-visit `http://localhost/tazamadesk-php/`.
+- PHP (no framework)
+- JSON flat-file storage (`data/store.json`)
+- SQLite employee registry for phone-based auth
+- No external dependencies beyond PHP
 
-## Demo accounts
+## Running it
 
-Login screen has one-click demo login buttons, or use manually:
+```bash
+php -S 0.0.0.0:8099
+```
 
-| Role      | Email                          | Password      |
-|-----------|---------------------------------|---------------|
-| Employee  | angela.cruz@tazamadesk.com     | employee123   |
-| Admin     | marcus.webb@tazamadesk.com     | admin123      |
+Open `http://localhost:8099`. Log in with your work email and password.
 
-Log in as **Marcus Webb (admin)** first — there's a floating message bubble
-waiting bottom-right from Angela Cruz on ticket #4821, demonstrating the
-employee → admin notification feature.
+Demo accounts (development only):
+- Admin: `moses.Chola@tazamadesk.com` / `admin123`
+- Employee: `Chileshe.Chileshe@tazamadesk.com` / `employee123`
 
-## What's implemented
+## Tazai AI assistant
 
-- **Auth** — session-based login, credentials resolve to a role automatically, logout.
-- **Role-based dashboards** — distinct Employee and Admin views.
-- **Ticket list** — filterable by status/priority; list or kanban board view (admin).
-- **Kanban board** — real drag-and-drop between columns (native HTML5 D&D + a small
-  AJAX endpoint, `update_ticket_ajax.php`) that persists the status change.
-- **Ticket detail** — SLA countdown ring, status stepper, assignment, status changes,
-  and a **close-ticket flow** that requires a resolution note before closing.
-- **Messaging** — employees and admins can message each other on a ticket; messages
-  render as chat bubbles distinct from system log entries.
-- **Floating notification bubble** — when the employee who owns a ticket messages the
-  admin assigned to it, the admin sees a floating bubble (bottom-right) with a preview,
-  until they open or dismiss it.
-- **New ticket creation**, **Knowledge Base search**, global **search** (tickets + articles),
-  **Team & Assignments** and **Reports** (admin), **Settings** page with a one-click
-  demo data reset.
+The floating button on the site connects to Tazai, an AI IT support agent. It's currently disabled while we finish testing. When it's on, employees can describe their issue in plain language before filing a ticket — Tazai will try to help fix it first.
 
-## Notes on the storage layer
+## Project status
 
-`data/store.json` is created automatically and is the live working copy — edit
-`data/seed.json` if you want to change the starting demo data, then delete
-`data/store.json` (or use Settings → "Reset demo data") to regenerate it.
-
-This uses simple file-based storage intentionally, so the whole app runs with
-zero configuration. If you want to move this to MySQL later, the data-access
-functions are all centralized in `includes/config.php` (`td_load_store()`,
-`td_save_store()`, `td_find_ticket_index()`) — that's the layer you'd swap out.
+Active development. Built by the Tazama IT team in collaboration with Vidmar AI.
