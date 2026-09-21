@@ -1,4 +1,5 @@
 (function () {
+  // Keep each priority form synchronized with the server-provided rule matrix.
   var matrix = window.TD_PRIORITY_MATRIX || {};
   var colors = {
     Critical: { bg: '#FEE2E2', color: '#dc2626', border: '#fca5a5', dot: '🔴' },
@@ -13,6 +14,7 @@
     Low: 'Minor inconvenience involving a non-essential service, device, or function.',
   };
 
+  // Support the same behavior on every page that exposes a priority form.
   document.querySelectorAll('[data-priority-form]').forEach(function (form) {
     var dept = form.querySelector('[data-priority-dept]');
     var cat = form.querySelector('[data-priority-cat]');
@@ -21,9 +23,11 @@
     var description = form.querySelector('[data-priority-description]');
     if (!dept || !cat || !indicator) return;
 
+    // Derive and display the priority whenever either selection changes.
     function updatePriority() {
       var priority = matrix[dept.value] && matrix[dept.value][cat.value];
       var scheme = colors[priority];
+      // Reset the display when the selected combination has no configured rule.
       if (!scheme) {
         indicator.textContent = 'Select department and category to determine priority.';
         indicator.style.background = '#f4f3f1';

@@ -11,6 +11,7 @@ $priorities = $store['priorities'];
 $page_title = 'Dashboard';
 $active_nav = 'dashboard';
 
+/** Render reusable ticket rows with status, owner, and SLA indicators. */
 function td_render_ticket_rows($rows, $priorities, $show_assignee = true) {
     if (empty($rows)) {
         echo '<div style="padding:48px;text-align:center;color:var(--text-faint);font-size:13px;">No tickets to show.</div>';
@@ -77,6 +78,7 @@ function td_render_ticket_rows($rows, $priorities, $show_assignee = true) {
 
 require __DIR__ . '/includes/layout_top.php';
 
+// Employees see their own recent tickets; administrators see team-wide metrics.
 if ($role === 'employee'):
     $mine = array_values(array_filter($tickets, function ($t) use ($user) {
         return ($t['requester'] ?? '') === ($user['name'] ?? '');
@@ -166,6 +168,7 @@ if ($role === 'employee'):
     $breaching = count(array_filter($tickets, fn($t) => td_sla_breached($t, $priorities)));
     $resolvedToday = count(array_filter($tickets, fn($t) => $t['status'] === 'Resolved'));
 
+    // Count and sort tickets to build the department workload chart.
     $byDept = [];
     foreach ($tickets as $t) $byDept[$t['dept']] = ($byDept[$t['dept']] ?? 0) + 1;
     arsort($byDept);
@@ -221,6 +224,7 @@ if ($role === 'employee'):
 <?php endif; ?>
 
 <script>
+// Open the quick-report modal and focus its first field for keyboard users.
 function openReportIssue(event) {
   if (event) event.preventDefault();
   var modal = document.getElementById('report-issue');
@@ -231,6 +235,7 @@ function openReportIssue(event) {
   if (subject) subject.focus();
 }
 
+// Hide the modal and restore normal page scrolling.
 function closeReportIssue() {
   var modal = document.getElementById('report-issue');
   if (!modal) return;
@@ -238,10 +243,12 @@ function closeReportIssue() {
   document.body.style.overflow = '';
 }
 
+// Close only when the user clicks the backdrop, not the form itself.
 function closeReportIssueOnOverlay(event) {
   if (event.target === event.currentTarget) closeReportIssue();
 }
 
+// Let users dismiss the modal with Escape.
 document.addEventListener('keydown', function (event) {
   if (event.key === 'Escape') closeReportIssue();
 });

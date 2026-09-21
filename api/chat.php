@@ -9,6 +9,7 @@
  *   3. Employee registry (SQLite) — user must be an authorized Tazama employee
  */
 
+/** Validate a chat request and return a safe support response. */
 function handle_chat($method) {
     if ($method !== 'POST') {
         http_response_code(405);
@@ -107,6 +108,7 @@ function tazai_is_authorized_employee($email) {
     }
 }
 
+/** Match a support message to a rule-based response; history is reserved for AI use. */
 function tazai_respond($msg, $history) {
     $m = strtolower($msg);
 

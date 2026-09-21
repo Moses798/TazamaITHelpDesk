@@ -70,6 +70,7 @@ function td_init_store() {
     td_save_store($seed);
 }
 
+/** Load the initialized JSON store for the current request. */
 function td_load_store() {
     td_init_store();
     $raw = @file_get_contents(DATA_FILE);
@@ -79,6 +80,7 @@ function td_load_store() {
     return json_decode($raw, true);
 }
 
+/** Write the JSON store atomically with an exclusive lock. */
 function td_save_store($store) {
     $fp = fopen(DATA_FILE, 'c+');
     if ($fp === false) return false;
@@ -92,6 +94,7 @@ function td_save_store($store) {
     return true;
 }
 
+/** Rebuild the runtime store from seed data. */
 function td_reset_store() {
     if (file_exists(DATA_FILE)) unlink(DATA_FILE);
     td_init_store();
@@ -117,10 +120,12 @@ function td_find_ticket_index($store, $id) {
 /* Auth                                                                 */
 /* ------------------------------------------------------------------ */
 
+/** Return the signed-in user's session record, if present. */
 function td_current_user() {
     return $_SESSION['user'] ?? null;
 }
 
+/** Redirect anonymous visitors to the login page. */
 function td_require_login() {
     if (!td_current_user()) {
         header('Location: index.php');
@@ -128,6 +133,7 @@ function td_require_login() {
     }
 }
 
+/** Permit only the requested role to continue to the current page. */
 function td_require_role($role) {
     td_require_login();
     if (td_current_user()['role'] !== $role) {
@@ -140,8 +146,10 @@ function td_require_role($role) {
 /* Small helpers                                                       */
 /* ------------------------------------------------------------------ */
 
+/** Escape text before placing it in HTML. */
 function h($s) { return htmlspecialchars((string) $s, ENT_QUOTES, 'UTF-8'); }
 
+/** Format a Unix timestamp for display in the interface. */
 function td_time_ago_label($ts) {
     return date('M j, g:i A', (int) $ts);
 }
@@ -154,6 +162,7 @@ function td_sla_pct($ticket, $priorities) {
     return max(0, min(100, ($remaining / $hours) * 100));
 }
 
+/** Determine whether an unresolved ticket has exceeded its SLA window. */
 function td_sla_breached($ticket, $priorities) {
     if (in_array($ticket['status'], ['Resolved', 'Closed'], true)) return false;
     $hours = $priorities[$ticket['priority']]['hours'];
@@ -161,6 +170,7 @@ function td_sla_breached($ticket, $priorities) {
     return $elapsedH > $hours;
 }
 
+/** Map a priority name to its display colors. */
 function td_priority_colors($priority) {
     $map = [
         'Critical' => ['color' => '#A8281F', 'soft' => '#FBE9E7'],
@@ -171,6 +181,7 @@ function td_priority_colors($priority) {
     return $map[$priority] ?? ['color' => '#5C5854', 'soft' => '#EEF0F4'];
 }
 
+/** Map a ticket status to its display colors. */
 function td_status_colors($status) {
     $map = [
         'New'          => ['color' => '#3E6FA8', 'soft' => '#E8EFF6'],
@@ -183,6 +194,7 @@ function td_status_colors($status) {
     return $map[$status] ?? ['color' => '#5C5854', 'soft' => '#EEF0F4'];
 }
 
+/** Build up to two initials for an avatar label. */
 function td_initials($name) {
     if (!$name) return '?';
     $parts = preg_split('/\s+/', trim($name));
@@ -203,6 +215,7 @@ function td_avatar_colors($name) {
     return $palette[$sum % 3];
 }
 
+/** Return the next available ID in the local ticket store. */
 function td_next_ticket_id($store) {
     $max = 0;
     foreach ($store['tickets'] as $t) $max = max($max, (int) $t['id']);

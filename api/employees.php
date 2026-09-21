@@ -6,6 +6,7 @@
 
 define('TAZAI_DB', __DIR__ . '/../../database/tazai.db');
 
+/** Convert common Zambian phone formats to the database's E.164 format. */
 function normalize_phone_api(string $phone): string {
     $digits = preg_replace('/\D/', '', $phone);
     if (strlen($digits) === 12 && str_starts_with($digits, '260')) return "+$digits";
@@ -14,6 +15,7 @@ function normalize_phone_api(string $phone): string {
     return "+$digits";
 }
 
+/** Serve the authenticated employee-lookup endpoint. */
 function handle_employees($method, $sub) {
     if ($method !== 'GET') {
         http_response_code(405);
@@ -36,9 +38,11 @@ function handle_employees($method, $sub) {
             return;
         }
 
+        // Normalize before querying so equivalent user input matches one stored number.
         $normalized = normalize_phone_api($phone);
 
         try {
+            // Open the registry read-only and return only authorized employees.
             $db  = new SQLite3(TAZAI_DB, SQLITE3_OPEN_READONLY);
             $stmt = $db->prepare(
                 'SELECT id, name, title, department, position, phone_e164, email, role, authorized

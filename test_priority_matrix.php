@@ -5,6 +5,7 @@
  * This file is a standalone test; it does NOT touch data/store.json.
  */
 
+// Test fixture mirrors the configured department/category priority rules.
 $priorityMatrix = [
     'Administration' => [
         'Hardware'       => 'Medium',
@@ -89,6 +90,7 @@ $priorityMatrix = [
     ],
 ];
 
+// Iterate every supported category to detect missing matrix entries.
 $categories = ['Hardware', 'Software', 'Network', 'Account Access', 'Email', 'Printer', 'Security'];
 
 // Named assertions from the spec
@@ -101,6 +103,7 @@ $assertions = [
     ['dept' => 'Security',         'cat' => 'Security',       'expect' => 'Critical'],
 ];
 
+// Track both full-matrix coverage and named specification assertions.
 $pass = 0;
 $fail = 0;
 $total = 0;
@@ -112,6 +115,7 @@ printf("%-20s", "");
 foreach ($categories as $cat) printf("%-16s", $cat);
 echo "\n" . str_repeat("-", 20 + 16 * count($categories)) . "\n";
 
+// Print and validate every department/category combination.
 foreach ($priorityMatrix as $dept => $cats) {
     printf("%-20s", $dept);
     foreach ($categories as $cat) {
@@ -124,6 +128,7 @@ foreach ($priorityMatrix as $dept => $cats) {
 }
 
 echo "\n=== Named Assertions ===\n\n";
+// Verify the high-value combinations called out in the requirements.
 foreach ($assertions as $a) {
     $got = $priorityMatrix[$a['dept']][$a['cat']] ?? 'MISSING';
     $ok  = $got === $a['expect'];
