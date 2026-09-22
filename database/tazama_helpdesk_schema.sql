@@ -60,9 +60,8 @@ CREATE TABLE statuses (
 -- ----------------------------------------------------------------------------
 
 CREATE TABLE users (
-  id             INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  username       VARCHAR(100) NOT NULL PRIMARY KEY,
   full_name      VARCHAR(150) NOT NULL,
-  email          VARCHAR(190) NULL UNIQUE,
   password_hash  VARCHAR(255) NULL,              -- bcrypt/argon2; NULL for agents w/o login
   role           ENUM('employee','agent','admin') NOT NULL DEFAULT 'employee',
   title          VARCHAR(100) NULL,               -- e.g. "Finance Dept.", "IT Administrator"
@@ -103,12 +102,12 @@ CREATE TABLE tickets (
   category_id       INT UNSIGNED NOT NULL,
   priority_id       INT UNSIGNED NOT NULL,
   status_id         INT UNSIGNED NOT NULL,
-  requester_id      INT UNSIGNED NOT NULL,
-  assignee_id       INT UNSIGNED NULL,
+  requester_username VARCHAR(100) NOT NULL,
+  assignee_username VARCHAR(100) NULL,
   description       TEXT NOT NULL,
   created_at        DATETIME NOT NULL,
   closed_at         DATETIME NULL,
-  closed_by_id      INT UNSIGNED NULL,
+  closed_by_username VARCHAR(100) NULL,
   resolution_note   TEXT NULL,
   source            VARCHAR(50) NULL,
   phone             VARCHAR(30) NULL,
@@ -121,15 +120,15 @@ CREATE TABLE tickets (
     ON UPDATE CASCADE ON DELETE RESTRICT,
   CONSTRAINT fk_tickets_status     FOREIGN KEY (status_id)     REFERENCES statuses(id)
     ON UPDATE CASCADE ON DELETE RESTRICT,
-  CONSTRAINT fk_tickets_requester  FOREIGN KEY (requester_id)  REFERENCES users(id)
+  CONSTRAINT fk_tickets_requester  FOREIGN KEY (requester_username)  REFERENCES users(username)
     ON UPDATE CASCADE ON DELETE RESTRICT,
-  CONSTRAINT fk_tickets_assignee   FOREIGN KEY (assignee_id)   REFERENCES users(id)
+  CONSTRAINT fk_tickets_assignee   FOREIGN KEY (assignee_username)   REFERENCES users(username)
     ON UPDATE CASCADE ON DELETE SET NULL,
-  CONSTRAINT fk_tickets_closed_by  FOREIGN KEY (closed_by_id)  REFERENCES users(id)
+  CONSTRAINT fk_tickets_closed_by  FOREIGN KEY (closed_by_username)  REFERENCES users(username)
     ON UPDATE CASCADE ON DELETE SET NULL,
   INDEX idx_tickets_status (status_id),
   INDEX idx_tickets_priority (priority_id),
-  INDEX idx_tickets_assignee (assignee_id),
+  INDEX idx_tickets_assignee (assignee_username),
   INDEX idx_tickets_created_at (created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -142,7 +141,7 @@ CREATE TABLE tickets (
 CREATE TABLE ticket_events (
   id             BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   ticket_id      INT UNSIGNED NOT NULL,
-  user_id        INT UNSIGNED NOT NULL,
+  username       VARCHAR(100) NOT NULL,
   actor_role     ENUM('employee','agent','admin','system') NOT NULL,
   action         VARCHAR(255) NOT NULL,           -- e.g. "created this ticket", "sent a message"
   note           TEXT NULL,                       -- history[].note or history[].text
@@ -152,7 +151,7 @@ CREATE TABLE ticket_events (
   created_at     DATETIME NOT NULL,
   CONSTRAINT fk_events_ticket FOREIGN KEY (ticket_id) REFERENCES tickets(id)
     ON UPDATE CASCADE ON DELETE CASCADE,
-  CONSTRAINT fk_events_user   FOREIGN KEY (user_id)   REFERENCES users(id)
+  CONSTRAINT fk_events_user   FOREIGN KEY (username)   REFERENCES users(username )
     ON UPDATE CASCADE ON DELETE RESTRICT,
   INDEX idx_events_ticket (ticket_id, created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -198,77 +197,17 @@ INSERT INTO statuses (id, name, sort_order) VALUES
 -- NOTE: seed passwords are the demo app's plaintext values (employee123/admin123).
 -- password_hash below wraps them with a placeholder marker — replace with a real
 -- bcrypt/argon2 hash (e.g. PHP password_hash()) before using this schema anywhere real.
-INSERT INTO users (id, full_name, email, password_hash, role, title) VALUES
-  (1, 'Angela Cruz', 'Chileshe.Chileshe@tazamadesk.com', 'PLAINTEXT-DEMO:employee123', 'employee', 'Finance Dept.'),
-  (2, 'Brian Tembo', NULL, NULL, 'employee', NULL),
-  (3, 'Chanda Mwape', NULL, NULL, 'employee', NULL),
-  (4, 'Chileshe Chileshe', NULL, NULL, 'agent', NULL),
-  (5, 'Chris Chipopola', NULL, NULL, 'agent', NULL),
-  (6, 'Daniel Kim', NULL, NULL, 'admin', NULL),
-  (7, 'Esther Mwila', NULL, NULL, 'employee', NULL),
-  (8, 'Fatima Osei', NULL, NULL, 'admin', NULL),
-  (9, 'Given Mulenga', NULL, NULL, 'employee', NULL),
-  (10, 'Grace Mumba', NULL, NULL, 'employee', NULL),
-  (11, 'James Banda', NULL, NULL, 'employee', NULL),
-  (12, 'Kondwani Phiri', NULL, NULL, 'employee', NULL),
-  (13, 'Marcus Webb', 'moses.Chola@tazamadesk.com', 'PLAINTEXT-DEMO:admin123', 'admin', 'IT Administrator'),
-  (14, 'Moses Chola', NULL, NULL, 'agent', NULL),
-  (15, 'Mwansa Chola', NULL, NULL, 'employee', NULL),
-  (16, 'Natasha kunda', NULL, NULL, 'agent', NULL),
-  (17, 'Natasha Zulu', NULL, NULL, 'employee', NULL),
-  (18, 'Peter Sinkala', NULL, NULL, 'employee', NULL),
-  (19, 'Priya Nandy', NULL, NULL, 'admin', NULL),
-  (20, 'Ruth Chanda', NULL, NULL, 'employee', NULL),
-  (21, 'Shadrick Bilali', NULL, NULL, 'agent', NULL);
+INSERT INTO users (username, full_name, password_hash, role, title) VALUES
 
-INSERT INTO kb_articles (id, title, category_id, views) VALUES
-  (1, 'How to reset your network password', 4, 1204),
-  (2, 'Connecting to the office VPN', 3, 982),
-  (3, 'Setting up email on your phone', 5, 875),
-  (4, 'Requesting new hardware', 1, 640),
-  (5, 'Reporting a phishing email', 7, 1310),
-  (6, 'Fixing common printer jams', 6, 512);
+INSERT INTO kb_articles (username, title, category_id, views) VALUES
+  ('angela.cruz', 'How to reset your network password', 4, 1204),
+  ('brian.tembo', 'Connecting to the office VPN', 3, 982),
+  ('chanda.mwape', 'Setting up email on your phone', 5, 875),
+  ('chileshe.chileshe', 'Requesting new hardware', 1, 640),
+  ('chris.chipopola', 'Reporting a phishing email', 7, 1310),
+  ('david.mwale', 'Fixing common printer jams', 6, 512);
 
-INSERT INTO tickets (id, subject, department_id, category_id, priority_id, status_id,
+INSERT INTO tickets (username, subject, department_id, category_id, priority_id, status_id,
                      requester_id, assignee_id, description, created_at, closed_at,
                      closed_by_id, resolution_note) VALUES
-  (4821, 'Outlook not syncing since this morning', 2, 5, 2, 3, 1, 13, 'Emails sent after 8am are not appearing in Sent folder. Rebooted twice, still failing to sync across devices.', '2026-09-22 04:46:57', NULL, NULL, NULL),
-  (4820, 'Laptop won''t power on after update', NULL, 1, 1, 1, 2, NULL, 'Dell Latitude froze during a Windows update overnight and now shows a black screen with no response to power button.', '2026-09-22 07:28:57', NULL, NULL, NULL),
-  (4819, 'Cannot access shared Finance drive', 2, 4, 2, 2, 10, 13, 'Getting ''access denied'' on \\fileserver\finance since permissions were updated yesterday.', '2026-09-22 02:16:57', NULL, NULL, NULL),
-  (4818, 'VPN drops every 10 minutes remotely', 5, 3, 3, 3, 12, 6, 'Working from home, VPN client disconnects repeatedly, forcing re-authentication throughout the day.', '2026-09-21 18:16:57', NULL, NULL, NULL),
-  (4817, 'New starter needs full account setup', 3, 4, 3, 1, 17, NULL, 'New hire starting Monday needs AD account, email, Slack, and Salesforce access provisioned.', '2026-09-22 06:16:57', NULL, NULL, NULL),
-  (4816, 'Printer on 3rd floor jamming constantly', 5, 6, 4, 4, 11, 8, 'HP LaserJet on the 3rd floor jams roughly every 5th print job, mostly on double-sided jobs. Awaiting replacement toner.', '2026-09-21 02:16:57', NULL, NULL, NULL),
-  (4815, 'Suspicious phishing email reported', NULL, 7, 1, 2, 15, 13, 'Received an email impersonating IT asking to reset password via external link. Reported before clicking.', '2026-09-22 07:04:57', NULL, NULL, NULL),
-  (4814, 'Salesforce dashboard loading blank', NULL, 2, 3, 5, 20, 19, 'Pipeline dashboard has been blank since the last release. Cleared cache did not help.', '2026-09-21 12:16:57', NULL, NULL, NULL),
-  (4813, 'Wi-Fi weak signal in meeting room B', NULL, 3, 4, 5, 3, 6, 'Signal frequently drops to one bar during client calls in meeting room B, second floor.', '2026-09-20 08:16:57', NULL, NULL, NULL),
-  (4812, 'Password reset for finance portal', 2, 4, 4, 6, 9, 8, 'Locked out of the finance reporting portal after three failed attempts.', '2026-09-19 10:16:57', '2026-09-19 15:16:57', 8, 'Reset the account password and unlocked the profile after verifying identity over the phone. Confirmed the user could log back in successfully.'),
-  (4811, 'Monitor flickering intermittently', NULL, 1, 4, 6, 7, 13, 'Secondary monitor flickers when laptop is on battery power only.', '2026-09-18 14:16:57', '2026-09-19 00:16:57', 13, 'Updated the display driver and disabled power-saving dimming on battery mode. Flickering has not recurred after two days of use.'),
-  (4810, 'Teams calls dropping mid-meeting', NULL, 2, 2, 1, 18, NULL, 'Teams calls disconnect roughly 15 minutes in, affecting client meetings twice this week.', '2026-09-22 03:46:57', NULL, NULL, NULL);
-
-INSERT INTO ticket_events (ticket_id, user_id, actor_role, action, note, is_message, seen_by_admin, created_at) VALUES
-  (4821, 1, 'employee', 'created this ticket', NULL, 0, NULL, '2026-09-22 04:46:57'),
-  (4821, 13, 'admin', 'picked up this ticket', NULL, 0, NULL, '2026-09-22 05:10:57'),
-  (4821, 1, 'employee', 'sent a message', 'Hi, still not syncing — could someone take another look today? It''s affecting a few people on my team too.', 1, 0, '2026-09-22 07:52:57'),
-  (4820, 2, 'employee', 'created this ticket', NULL, 0, NULL, '2026-09-22 07:28:57'),
-  (4819, 10, 'employee', 'created this ticket', NULL, 0, NULL, '2026-09-22 02:16:57'),
-  (4819, 13, 'admin', 'picked up this ticket', NULL, 0, NULL, '2026-09-22 02:52:57'),
-  (4818, 12, 'employee', 'created this ticket', NULL, 0, NULL, '2026-09-21 18:16:57'),
-  (4818, 6, 'admin', 'picked up this ticket', NULL, 0, NULL, '2026-09-21 19:40:57'),
-  (4817, 17, 'employee', 'created this ticket', NULL, 0, NULL, '2026-09-22 06:16:57'),
-  (4816, 11, 'employee', 'created this ticket', NULL, 0, NULL, '2026-09-21 02:16:57'),
-  (4816, 8, 'admin', 'picked up this ticket', NULL, 0, NULL, '2026-09-21 05:16:57'),
-  (4815, 15, 'employee', 'created this ticket', NULL, 0, NULL, '2026-09-22 07:04:57'),
-  (4815, 13, 'admin', 'picked up this ticket', NULL, 0, NULL, '2026-09-22 07:16:57'),
-  (4814, 20, 'employee', 'created this ticket', NULL, 0, NULL, '2026-09-21 12:16:57'),
-  (4814, 19, 'admin', 'picked up this ticket', NULL, 0, NULL, '2026-09-21 14:16:57'),
-  (4813, 3, 'employee', 'created this ticket', NULL, 0, NULL, '2026-09-20 08:16:57'),
-  (4813, 6, 'admin', 'picked up this ticket', NULL, 0, NULL, '2026-09-20 12:16:57'),
-  (4812, 9, 'employee', 'created this ticket', NULL, 0, NULL, '2026-09-19 10:16:57'),
-  (4812, 8, 'admin', 'picked up this ticket', NULL, 0, NULL, '2026-09-19 12:16:57'),
-  (4812, 8, 'admin', 'closed this ticket', 'Reset the account password and unlocked the profile after verifying identity over the phone. Confirmed the user could log back in successfully.', 0, NULL, '2026-09-19 15:16:57'),
-  (4811, 7, 'employee', 'created this ticket', NULL, 0, NULL, '2026-09-18 14:16:57'),
-  (4811, 13, 'admin', 'picked up this ticket', NULL, 0, NULL, '2026-09-18 16:16:57'),
-  (4811, 13, 'admin', 'closed this ticket', 'Updated the display driver and disabled power-saving dimming on battery mode. Flickering has not recurred after two days of use.', 0, NULL, '2026-09-19 00:16:57'),
-  (4810, 18, 'employee', 'created this ticket', NULL, 0, NULL, '2026-09-22 03:46:57');
-
 ALTER TABLE tickets AUTO_INCREMENT = 4822;
