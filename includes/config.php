@@ -1,17 +1,16 @@
 <?php
 /**
  * TazamaDesk — core config, session bootstrap, and data access helpers.
- * Data is stored in a single JSON file (data/store.json) so the app runs
- * with zero database setup. Every request reads the file, and any writes
- * are saved back with an exclusive lock.
+ * Data is stored in MySQL. Configure TAZAMADESK_DB_HOST, _PORT, _NAME, _USER,
+ * and _PASSWORD in the web-server environment when XAMPP defaults do not fit.
  */
 
 session_start();
 
 define('BASE_PATH', dirname(__DIR__));
-define('DATA_FILE', BASE_PATH . '/data/store.json');
 define('SEED_FILE', BASE_PATH . '/data/seed.json');
 require_once __DIR__ . '/priority.php';
+require_once __DIR__ . '/database.php';
 
 // ── Tazai AI Enable Switch ────────────────────────────────────────────────────
 // Set to true ONLY when development is complete and Tazai is ready for employees.
@@ -25,79 +24,37 @@ define('TAZAI_DB_PATH', '/home/shadrickvidmar/Projects/vidmarholdings/Businesses
 /* Data store                                                          */
 /* ------------------------------------------------------------------ */
 
-/** Build the working store from the seed file on first run, or recover if the store file is corrupt. */
+/** Verify the imported MySQL schema is reachable. */
 function td_init_store() {
-    $needs_init = !file_exists(DATA_FILE);
-
-    if (!$needs_init) {
-        $raw = @file_get_contents(DATA_FILE);
-        $decoded = $raw === false ? null : json_decode($raw, true);
-        $needs_init = !is_array($decoded) || !isset($decoded['accounts']) || !isset($decoded['tickets']);
-    }
-
-    if (!$needs_init) return;
-
-    if (!file_exists(SEED_FILE)) {
-        return;
-    }
-
-    $seed = json_decode(file_get_contents(SEED_FILE), true);
-    if (!is_array($seed)) {
-        return;
-    }
-
-    $now = time();
-
-    foreach ($seed['tickets'] as &$t) {
-        $t['created'] = $now - (int) round($t['created_offset_h'] * 3600);
-        unset($t['created_offset_h']);
-
-        if (isset($t['closed_offset_h'])) {
-            $t['closed_at'] = $now - (int) round($t['closed_offset_h'] * 3600);
-            unset($t['closed_offset_h']);
-        } else {
-            $t['closed_at'] = null;
-        }
-
-        foreach ($t['history'] as &$h) {
-            $h['at'] = $now - (int) round($h['offset_h'] * 3600);
-            unset($h['offset_h']);
-        }
-        unset($h);
-    }
-    unset($t);
-
-    td_save_store($seed);
+    td_db()->query('SELECT 1 FROM tickets LIMIT 1');
 }
 
 /** Load the initialized JSON store for the current request. */
 function td_load_store() {
     td_init_store();
-    $raw = @file_get_contents(DATA_FILE);
-    if ($raw === false) {
-        return null;
-    }
-    return json_decode($raw, true);
+    return td_db_store_load();
 }
 
 /** Write the JSON store atomically with an exclusive lock. */
 function td_save_store($store) {
-    $fp = fopen(DATA_FILE, 'c+');
-    if ($fp === false) return false;
-    flock($fp, LOCK_EX);
-    ftruncate($fp, 0);
-    rewind($fp);
-    fwrite($fp, json_encode($store, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-    fflush($fp);
-    flock($fp, LOCK_UN);
-    fclose($fp);
-    return true;
+    return td_db_store_save($store);
 }
 
 /** Rebuild the runtime store from seed data. */
 function td_reset_store() {
-    if (file_exists(DATA_FILE)) unlink(DATA_FILE);
-    td_init_store();
+    $seed = json_decode(file_get_contents(SEED_FILE), true);
+    if (!is_array($seed)) throw new RuntimeException('The JSON seed file is unavailable.');
+    $now = time();
+    foreach ($seed['tickets'] as &$ticket) {
+        $ticket['created'] = $now - (int)round(($ticket['created_offset_h'] ?? 0) * 3600);
+        unset($ticket['created_offset_h']);
+        $ticket['closed_at'] = isset($ticket['closed_offset_h']) ? $now - (int)round($ticket['closed_offset_h'] * 3600) : null;
+        unset($ticket['closed_offset_h']);
+        foreach ($ticket['history'] as &$event) { $event['at'] = $now - (int)round(($event['offset_h'] ?? 0) * 3600); unset($event['offset_h']); }
+        unset($event);
+    }
+    unset($ticket);
+    td_save_store($seed);
 }
 
 /** Find one ticket by id from a store array (read-only copy). Returns null if missing. */

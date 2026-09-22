@@ -1,54 +1,15 @@
 <?php
 /**
  * Tazai API — Tickets resource
- * CRUD operations on TazamaDesk store.json
+ * CRUD operations on the TazamaDesk MySQL database.
  */
-
-define('STORE_FILE', __DIR__ . '/../data/store.json');
-
-/** Load the API store, materializing seed timestamps on first use. */
-function td_api_load() {
-    if (!file_exists(STORE_FILE)) {
-        // Init from seed if store doesn't exist yet
-        $seed = __DIR__ . '/../data/seed.json';
-        if (file_exists($seed)) {
-            $data = json_decode(file_get_contents($seed), true);
-            $now = time();
-            // Convert relative seed times into timestamps before persisting the store.
-            foreach ($data['tickets'] as &$t) {
-                $t['created'] = $now - (int)round(($t['created_offset_h'] ?? 0) * 3600);
-                unset($t['created_offset_h']);
-                if (isset($t['closed_offset_h'])) {
-                    $t['closed_at'] = $now - (int)round($t['closed_offset_h'] * 3600);
-                    unset($t['closed_offset_h']);
-                } else { $t['closed_at'] = null; }
-                foreach ($t['history'] as &$h) {
-                    $h['at'] = $now - (int)round(($h['offset_h'] ?? 0) * 3600);
-                    unset($h['offset_h']);
-                }
-            }
-            td_api_save($data);
-            return $data;
-        }
-        return ['tickets' => [], 'accounts' => []];
-    }
-    return json_decode(file_get_contents(STORE_FILE), true);
-}
-
-/** Persist the complete store while holding an exclusive file lock. */
-function td_api_save($store) {
-    $fp = fopen(STORE_FILE, 'c+');
-    flock($fp, LOCK_EX);
-    ftruncate($fp, 0); rewind($fp);
-    fwrite($fp, json_encode($store, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-    fflush($fp); flock($fp, LOCK_UN); fclose($fp);
-}
+require_once __DIR__ . '/../includes/config.php';
+function td_api_load() { return td_load_store(); }
+function td_api_save($store) { return td_save_store($store); }
 
 /** Return the next numeric ticket ID after the current highest ID. */
 function td_next_id($store) {
-    $max = 0;
-    foreach ($store['tickets'] as $t) $max = max($max, (int)$t['id']);
-    return $max + 1;
+    return td_next_ticket_id($store);
 }
 
 /** Dispatch ticket list, detail, create, and update operations. */
