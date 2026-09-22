@@ -215,11 +215,13 @@ tr.ticket-row:hover { background: #FAFBFE; cursor: pointer; }
 
 .auth-shell {
   min-height: 100vh; width: 100%;
-  background: linear-gradient(160deg, var(--bg-app) 0%, var(--brand-soft) 55%, var(--bg-app) 100%);
+  background:
+    linear-gradient(160deg, rgba(28,25,23,.55) 0%, rgba(58,11,13,.45) 55%, rgba(28,25,23,.6) 100%),
+    url('img/login-bg.jpg') center center / cover no-repeat;
   display: flex; align-items: center; justify-content: center; padding: 40px 20px;
 }
 .auth-card { width: 100%; max-width: 420px; }
-.auth-box { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px 30px; box-shadow: 0 20px 48px -16px rgba(28,25,23,.18); }
+.auth-box { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px 30px; box-shadow: 0 20px 48px -16px rgba(28,25,23,.35); }
 
 .demo-account {
   display: flex; align-items: center; gap: 10px; text-align: left; cursor: pointer; width: 100%;
