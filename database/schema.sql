@@ -110,6 +110,9 @@ CREATE TABLE tickets (
   closed_at         DATETIME NULL,
   closed_by_id      INT UNSIGNED NULL,
   resolution_note   TEXT NULL,
+  source            VARCHAR(50) NULL,
+  phone             VARCHAR(30) NULL,
+  internal_notes    JSON NULL,
   CONSTRAINT fk_tickets_department FOREIGN KEY (department_id) REFERENCES departments(id)
     ON UPDATE CASCADE ON DELETE SET NULL,
   CONSTRAINT fk_tickets_category   FOREIGN KEY (category_id)   REFERENCES categories(id)
@@ -145,6 +148,7 @@ CREATE TABLE ticket_events (
   note           TEXT NULL,                       -- history[].note or history[].text
   is_message     TINYINT(1) NOT NULL DEFAULT 0,
   seen_by_admin  TINYINT(1) NULL,                 -- only meaningful when is_message = 1
+  seen_by_requester TINYINT(1) NULL,              -- only meaningful when is_message = 1
   created_at     DATETIME NOT NULL,
   CONSTRAINT fk_events_ticket FOREIGN KEY (ticket_id) REFERENCES tickets(id)
     ON UPDATE CASCADE ON DELETE CASCADE,

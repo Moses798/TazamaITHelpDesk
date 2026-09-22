@@ -22,7 +22,7 @@ function td_db() {
             PDO::ATTR_EMULATE_PREPARES => false,
         ]);
     } catch (PDOException $e) {
-        throw new RuntimeException("MySQL connection failed. Check TAZAMADESK_DB_* settings and import database/tazama_helpdesk_schema.sql. Details: " . $e->getMessage(), 0, $e);
+        throw new RuntimeException("MySQL connection failed. Check TAZAMADESK_DB_* settings and import database/schema.sql. Details: " . $e->getMessage(), 0, $e);
     }
     return $pdo;
 }
@@ -47,7 +47,7 @@ function td_db_store_load() {
     $pdo = td_db();
     $store = ['accounts' => [], 'agents' => [], 'departments' => [], 'categories' => [], 'priorities' => [], 'statuses' => [], 'kb_articles' => [], 'tickets' => []];
     foreach ($pdo->query("SELECT full_name, email, password_hash, role, title FROM users WHERE email IS NOT NULL AND password_hash IS NOT NULL") as $u) {
-        $store['accounts'][] = ['email' => $u['email'], 'password' => preg_replace('/^PLAINTEXT-DEMO:/', '', $u['password_hash']), 'role' => $u['role'], 'name' => $u['full_name'], 'title' => $u['title']];
+        $store['accounts'][] = ['username' => $u['email'], 'email' => $u['email'], 'password' => preg_replace('/^PLAINTEXT-DEMO:/', '', $u['password_hash']), 'role' => $u['role'], 'name' => $u['full_name'], 'title' => $u['title']];
     }
     $store['agents'] = $pdo->query("SELECT full_name FROM users WHERE role = 'agent' ORDER BY id")->fetchAll(PDO::FETCH_COLUMN);
     $store['departments'] = $pdo->query('SELECT name FROM departments ORDER BY id')->fetchAll(PDO::FETCH_COLUMN);
@@ -61,13 +61,19 @@ function td_db_store_load() {
     foreach ($events as $e) {
         $h = ['who'=>$e['who'], 'role'=>$e['actor_role'], 'action'=>$e['action'], 'at'=>(int)$e['at_ts']];
         if ($e['note'] !== null) $h[$e['is_message'] ? 'text' : 'note'] = $e['note'];
-        if ($e['is_message']) { $h['is_message'] = true; $h['seen_by_admin'] = (bool)$e['seen_by_admin']; $h['seen_by_requester'] = (bool)$e['seen_by_requester']; }
+        if ($e['is_message']) {
+            $h['is_message'] = true;
+            $h['seen_by_admin'] = (bool)($e['seen_by_admin'] ?? false);
+            $h['seen_by_requester'] = (bool)($e['seen_by_requester'] ?? false);
+        }
         $byTicket[$e['ticket_id']][] = $h;
     }
     foreach ($rows as $r) {
         $t = ['id'=>(int)$r['id'], 'subject'=>$r['subject'], 'dept'=>$r['dept'] ?? 'Unknown', 'cat'=>$r['cat'], 'priority'=>$r['priority'], 'status'=>$r['status'], 'requester'=>$r['requester'], 'assignee'=>$r['assignee'], 'created'=>(int)$r['created'], 'closed_at'=>$r['closed_ts'] === null ? null : (int)$r['closed_ts'], 'desc'=>$r['description'], 'history'=>$byTicket[$r['id']] ?? []];
-        foreach (['closed_by','resolution_note','source','phone'] as $key) if ($r[$key] !== null) $t[$key] = $r[$key];
-        $t['internal_notes'] = $r['internal_notes'] ? json_decode($r['internal_notes'], true) : [];
+        foreach (['closed_by','resolution_note','source','phone'] as $key) {
+            if (($r[$key] ?? null) !== null) $t[$key] = $r[$key];
+        }
+        $t['internal_notes'] = !empty($r['internal_notes']) ? json_decode($r['internal_notes'], true) : [];
         $store['tickets'][] = $t;
     }
     return $store;
