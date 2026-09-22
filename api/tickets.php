@@ -6,6 +6,7 @@
 
 define('STORE_FILE', __DIR__ . '/../data/store.json');
 
+/** Load the API store, materializing seed timestamps on first use. */
 function td_api_load() {
     if (!file_exists(STORE_FILE)) {
         // Init from seed if store doesn't exist yet
@@ -13,6 +14,7 @@ function td_api_load() {
         if (file_exists($seed)) {
             $data = json_decode(file_get_contents($seed), true);
             $now = time();
+            // Convert relative seed times into timestamps before persisting the store.
             foreach ($data['tickets'] as &$t) {
                 $t['created'] = $now - (int)round(($t['created_offset_h'] ?? 0) * 3600);
                 unset($t['created_offset_h']);
@@ -33,6 +35,7 @@ function td_api_load() {
     return json_decode(file_get_contents(STORE_FILE), true);
 }
 
+/** Persist the complete store while holding an exclusive file lock. */
 function td_api_save($store) {
     $fp = fopen(STORE_FILE, 'c+');
     flock($fp, LOCK_EX);
@@ -41,12 +44,14 @@ function td_api_save($store) {
     fflush($fp); flock($fp, LOCK_UN); fclose($fp);
 }
 
+/** Return the next numeric ticket ID after the current highest ID. */
 function td_next_id($store) {
     $max = 0;
     foreach ($store['tickets'] as $t) $max = max($max, (int)$t['id']);
     return $max + 1;
 }
 
+/** Dispatch ticket list, detail, create, and update operations. */
 function handle_tickets($method, $id) {
     $store = td_api_load();
 
@@ -89,6 +94,7 @@ function handle_tickets($method, $id) {
             return;
         }
 
+        // Reject incomplete tickets before adding them to the shared store.
         $required = ['subject', 'requester', 'desc'];
         foreach ($required as $f) {
             if (empty($body[$f])) {
@@ -152,6 +158,7 @@ function handle_tickets($method, $id) {
         foreach ($store['tickets'] as &$t) {
             if ((int)$t['id'] === (int)$id) {
                 $found = true;
+                // Restrict PATCH requests to fields the API is allowed to change.
                 $allowed = ['status', 'assignee', 'priority'];
                 foreach ($allowed as $f) {
                     if (isset($body[$f])) $t[$f] = $body[$f];
@@ -163,6 +170,7 @@ function handle_tickets($method, $id) {
                         'action' => 'updated status to ' . $body['status'],
                         'at'     => $now,
                     ];
+                    // Closing statuses receive a timestamp and optional resolution note.
                     if (in_array($body['status'], ['Resolved', 'Closed'])) {
                         $t['closed_at'] = $now;
                         if (!empty($body['resolution_note'])) {

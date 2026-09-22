@@ -97,11 +97,13 @@
 </style>
 
 <script>
+// Configuration and transient state shared by the floating chat widget.
 var TAZAI_API = 'http://<?= $_SERVER['HTTP_HOST'] ? explode(':', $_SERVER['HTTP_HOST'])[0] : '187.7.22.237' ?>:8099/api';
 var TAZAI_TOKEN = '<?= defined("TAZAI_API_TOKEN") ? TAZAI_API_TOKEN : "" ?>';
 var tazaiHistory = [];
 var tazaiFirstMsg = true;
 
+// Toggle the widget panel and clear its unread notification.
 function tazaiToggle() {
   var p = document.getElementById('tazai-panel');
   var unread = document.getElementById('tazai-unread');
@@ -114,11 +116,13 @@ function tazaiToggle() {
   }
 }
 
+// Keep the most recent chat message visible.
 function tazaiScrollBottom() {
   var m = document.getElementById('tazai-messages');
   m.scrollTop = m.scrollHeight;
 }
 
+// Append a safely rendered message bubble for a user, agent, or loading state.
 function tazaiAddMsg(text, role) {
   var m = document.getElementById('tazai-messages');
   var div = document.createElement('div');
@@ -129,6 +133,7 @@ function tazaiAddMsg(text, role) {
   return div;
 }
 
+// Submit the user's message and update the conversation with the API result.
 function tazaiSend() {
   var input = document.getElementById('tazai-input');
   var text = input.value.trim();
@@ -187,6 +192,7 @@ function tazaiSend() {
   });
 }
 
+// Hide the channel chooser when the user stays in the web chat.
 function tazaiContinueHere() {
   document.getElementById('tazai-channel-choice').style.display = 'none';
   document.getElementById('tazai-input').focus();

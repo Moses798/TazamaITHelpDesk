@@ -1,6 +1,7 @@
 <?php
 /** Shared department/category priority rules. */
 
+/** Return the authoritative department/category-to-priority lookup table. */
 function td_priority_matrix() {
     return [
         'Administration' => ['Hardware' => 'Medium', 'Software' => 'Medium', 'Network' => 'Medium', 'Account Access' => 'Medium', 'Email' => 'Medium', 'Printer' => 'Low', 'Security' => 'High'],
@@ -15,6 +16,7 @@ function td_priority_matrix() {
     ];
 }
 
+/** Look up a priority rule, falling back safely when a combination is unknown. */
 function td_priority_for($dept, $category) {
     $matrix = td_priority_matrix();
     return $matrix[$dept][$category] ?? 'Medium';

@@ -95,6 +95,7 @@ $priorityMatrix = [
     ],
 ];
 
+// Validate and save submitted tickets before rendering the form.
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $subject = trim($_POST['subject'] ?? '');
     $dept    = $_POST['dept'] ?? $store['departments'][0];
@@ -246,6 +247,7 @@ var PriorityMatrix = {
   }
 };
 
+// Presentation details for each calculated priority level.
 var PriorityColors = {
   'Critical': { bg: '#FEE2E2', color: '#dc2626', border: '#fca5a5', dot: '🔴' },
   'High':     { bg: '#FFEDD5', color: '#ea580c', border: '#fdba74', dot: '🟠' },
@@ -253,6 +255,7 @@ var PriorityColors = {
   'Low':      { bg: '#DCFCE7', color: '#16a34a', border: '#86efac', dot: '🟢' }
 };
 
+// Explain the business impact behind the displayed priority.
 var PriorityDescriptions = {
   'Critical': 'Immediate operational, financial, security, access-control, or core-system impact. A Critical issue may significantly interrupt essential business operations and requires immediate attention.',
   'High':     'Significant disruption to an important business function, but operations can continue temporarily. A High-priority issue affects an important business activity and should be addressed promptly.',
@@ -260,6 +263,7 @@ var PriorityDescriptions = {
   'Low':      'Minor inconvenience or issue involving a non-essential service, device, or function. A Low-priority issue has limited operational impact and can normally be addressed during routine support work.'
 };
 
+// Recalculate the read-only priority preview from the selected fields.
 function updatePriority() {
   var dept = document.getElementById('dept-select').value;
   var cat  = document.getElementById('cat-select').value;
@@ -291,6 +295,7 @@ function updatePriority() {
   hidden.value = priority;
 }
 
+// Keep the preview current as the requester changes either selector.
 document.getElementById('dept-select').addEventListener('change', updatePriority);
 document.getElementById('cat-select').addEventListener('change', updatePriority);
 
