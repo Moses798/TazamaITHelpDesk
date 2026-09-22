@@ -1,17 +1,17 @@
 {
     "accounts": [
         {
-            "email": "Chileshe.Chileshe@tazamadesk.com",
+            "username": "chileshe",
             "password": "employee123",
             "role": "employee",
-            "name": "Angela Cruz",
+            "name": "Chileshe Chileshe",
             "title": "Finance Dept."
         },
         {
-            "email": "moses.Chola@tazamadesk.com",
+            "username": "moses",
             "password": "admin123",
             "role": "admin",
-            "name": "Marcus Webb",
+            "name": "Moses Chola",
             "title": "IT Administrator"
         }
     ],

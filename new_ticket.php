@@ -130,14 +130,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$page_title = 'Report an Issue';
+$page_title = 'Raise a Ticket';
 $active_nav = $user['role'] === 'admin' ? 'tickets' : 'new-ticket';
 require __DIR__ . '/includes/layout_top.php';
 ?>
 
 <div class="card" style="max-width:640px;margin:0 auto;">
   <div style="padding:20px 26px;border-bottom:1px solid var(--border);">
-    <div class="display" style="font-size:17px;font-weight:700;">Report an issue</div>
+    <div class="display" style="font-size:17px;font-weight:700;">Raise a Ticket</div>
     <div style="font-size:12.5px;color:var(--text-mid);margin-top:2px;">Tell us what's going wrong — we'll route it to the right team.</div>
   </div>
   <form method="post" action="new_ticket.php" style="padding:26px;display:flex;flex-direction:column;gap:16px;">
