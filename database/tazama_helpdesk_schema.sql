@@ -198,12 +198,18 @@ INSERT INTO statuses (id, name, sort_order) VALUES
 -- password_hash below wraps them with a placeholder marker — replace with a real
 -- bcrypt/argon2 hash (e.g. PHP password_hash()) before using this schema anywhere real.
 INSERT INTO users (username, full_name, password_hash, role, title) VALUES
+  ('Namakau', 'Namakau Mulenga', 'Tazama123', 'employee', 'Finance Dept.'),
+  ('Shadrick', 'Shadrick Bilali', 'Tazama123', 'admin', 'IT administrator'),
+  ('Hendrix', 'Hendrix Kulumba', 'Tazama123', 'employee', 'operations'),
+  ('Chileshe', 'Chileshe Chileshe', 'Tazama123', 'admin', 'IT Administrator'),
+  ('Moses', 'Moses Chola', 'Tazama123', 'admin123', 'IT Administrator'),
+  ('Kumwenda', 'Kumwenda Musonda', 'Tazama123', 'employee', 'Dispatch Coordinator');
 
 INSERT INTO kb_articles (username, title, category_id, views) VALUES
   ('angela.cruz', 'How to reset your network password', 4, 1204),
   ('brian.tembo', 'Connecting to the office VPN', 3, 982),
   ('chanda.mwape', 'Setting up email on your phone', 5, 875),
-  ('chileshe.chileshe', 'Requesting new hardware', 1, 640),
+  ('Chileshe', 'Requesting new hardware', 1, 640),
   ('chris.chipopola', 'Reporting a phishing email', 7, 1310),
   ('david.mwale', 'Fixing common printer jams', 6, 512);
 
